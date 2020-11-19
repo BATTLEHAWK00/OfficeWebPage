@@ -27,6 +27,7 @@ public class DBConnector {
                 connPool.push(conn);
         } catch (Exception e) {
             e.printStackTrace();
+
         }
     }
 }
