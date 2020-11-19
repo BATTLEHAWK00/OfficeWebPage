@@ -2,16 +2,16 @@
 ## 开发环境及IDE
 ### 前端
 #### IDE
-VS Code
+>VS Code
 #### 开发环境
-Node.js
+>Node.js
 ### 后端
-Idea(后端)
+>Idea(后端)
 #### IDE
-Idea
+>Idea
 #### 开发环境
-MySQL
+>MySQL
 ## 前端技术
-Vue.js
+>Vue.js
 ## 后端技术
-Servlet+MySQL
+>Servlet+MySQL
