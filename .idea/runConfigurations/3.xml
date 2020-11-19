@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="全部启动" type="CompoundRunConfigurationType">
+    <toRun name="后端" type="com.poratu.idea.plugins.tomcat" />
+    <toRun name="前端" type="ShConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>
