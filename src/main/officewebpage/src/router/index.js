@@ -5,6 +5,8 @@ import Main from '@/components/Main'
 import Posts from '@/components/Posts'
 import Aboutus from '@/components/Aboutus'
 import OrderPost from '@/components/OrderPost'
+import Login from '@/components/Users/Login'
+import Reg from '@/components/Users/Register'
 
 Vue.use(Router)
 
@@ -29,6 +31,16 @@ const router = new Router({
       path: '/orderpost',
       name: '工作预约',
       component: OrderPost
+    },
+    {
+      path: '/login',
+      name: '登录',
+      component: Login
+    },
+    {
+      path: '/register',
+      name: '注册',
+      component: Reg
     }
   ]
 })

@@ -5,7 +5,7 @@
 			<b-navbar
 				toggleable="lg"
 				type="dark"
-				variant="info"
+				variant="dark"
 				class="nav-bar"
 				sticky
 			>
@@ -22,13 +22,32 @@
 					</b-navbar-nav>
 					<!-- Right aligned nav items -->
 					<b-navbar-nav class="ml-auto">
-						<b-nav-item-dropdown right>
+						<b-nav-item-dropdown
+							right
+							v-if="isLoggedin"
+							key="users"
+						>
 							<!-- Using 'button-content' slot -->
 							<template #button-content>
 								<em>{{ userName }}</em>
 							</template>
-							<b-nav-item>注销</b-nav-item>
+							<b-dropdown-item href="#">注销</b-dropdown-item>
 						</b-nav-item-dropdown>
+						<b-navbar-nav right v-else key="users">
+							<b-button
+								v-if="isLoggedin == false"
+								variant="primary"
+								style="margin-right: 10px"
+								@click="gotoLogin"
+								>登录</b-button
+							>
+							<b-button
+								v-if="isLoggedin == false"
+								variant="secondary"
+								@click="gotoRegister"
+								>注册</b-button
+							>
+						</b-navbar-nav>
 					</b-navbar-nav>
 				</b-collapse>
 			</b-navbar>
@@ -43,7 +62,16 @@ export default {
 	data() {
 		return {
 			userName: "请登录",
+			isLoggedin: false,
 		};
+	},
+	methods: {
+		gotoLogin() {
+			this.$router.replace("/login");
+		},
+		gotoRegister() {
+			this.$router.replace("/register");
+		},
 	},
 };
 </script>
@@ -57,15 +85,16 @@ export default {
 	color: #2c3e50;
 }
 .nav-bar {
-	background-color: white;
+	transition: all 0.5s;
 }
-ul{
-  padding: 0;
+
+ul {
+	padding: 0;
 }
-li{
-  list-style: none;
+li {
+	list-style: none;
 }
-body{
-  background-color: rgb(240, 240, 240);
+body {
+	background-color: rgb(247, 247, 247);
 }
 </style>

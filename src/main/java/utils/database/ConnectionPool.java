@@ -15,25 +15,37 @@ public class ConnectionPool {
     int MAX_SIZE;
     GetConnection getConnection;
 
-    public ConnectionPool(int initsize, int maxsize, GetConnection getConnection) throws SQLException {
+    public ConnectionPool(int initsize, int maxsize, GetConnection getConnection) {
         MAX_SIZE = maxsize;
         this.getConnection = getConnection;
-        while (connPool.size() < initsize)
-            connPool.push(getConnection.getConn());
+        try {
+            while (connPool.size() < initsize)
+                connPool.push(getConnection.getConn());
+        } catch (Exception e) {
+            System.err.println("创建数据库连接时发生错误：");
+            System.err.println(e.getMessage());
+        }
     }
 
-    public void push(Connection conn) throws SQLException {
-        if (connPool.size() >= MAX_SIZE) {
-            conn.close();
-            return;
+    public void push(Connection conn) {
+        try {
+            if (connPool.size() >= MAX_SIZE) {
+                conn.close();
+                return;
+            }
+            connPool.push(conn);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        connPool.push(conn);
     }
 
     public Connection pop() throws SQLException {
         try {
+            while (connPool.peek().isClosed())
+                connPool.pop();
             return connPool.pop();
         } catch (EmptyStackException e) {
+            System.out.println("数据库连接池已满,考虑增加连接池容量");
             return getConnection.getConn();
         }
     }

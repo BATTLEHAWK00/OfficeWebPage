@@ -3,10 +3,11 @@ package dao.response;
 import com.google.gson.Gson;
 
 public class Response {
-    private Data data;
+    private Object data;
     private String message;
 
-    public void SetData(Data data) {
+    public Response(String message, Object data) {
+        this.message = message;
         this.data = data;
     }
 
@@ -14,23 +15,13 @@ public class Response {
         this.message = message;
     }
 
-    public Response() {
-
-    }
-
-    public Response(String message) {
-        this.message = message;
-        this.data = new Data();
-    }
-
-    public Response(String message, Data data) {
-        this.message = message;
+    public void SetData(Object data) {
         this.data = data;
     }
 
     public String toJson() {
         if (data == null)
-            data = new Data();
+            data = new Object();
         return new Gson().toJson(this);
     }
 }

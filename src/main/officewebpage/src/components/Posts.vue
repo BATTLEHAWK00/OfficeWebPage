@@ -47,11 +47,11 @@ export default {
 	background-color: white;
 	text-align: left;
 	border-radius: 20px;
-	box-shadow: 2px 2px 5px rgb(163, 163, 163);
+	box-shadow: 2px 2px 5px rgb(209, 209, 209);
 	transition: all 0.5s;
 }
 .postItem:hover {
-	box-shadow: 2px 2px 8px rgb(73, 73, 73);
+	box-shadow: 2px 2px 8px rgb(187, 187, 187);
 	width: 65%;
 }
 .postItem a {

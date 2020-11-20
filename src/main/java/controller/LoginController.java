@@ -1,10 +1,9 @@
 package controller;
 
-import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import dao.response.Response;
-import dao.response.datatypes.HelloData;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,9 +14,12 @@ import java.io.IOException;
 public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        var postvar = req.getParameterMap();
-        var res = new Response();
-        res.SetMessage(postvar.get("username")[0]);
+        JsonObject jsonObject = JsonParser.parseReader(req.getReader()).getAsJsonObject();
+        String username = jsonObject.get("username").getAsString();
+        String passwd = jsonObject.get("passwd").getAsString();
+        JsonObject data = new JsonObject();
+        data.addProperty("Hello", "Hello");
+        var res = new Response("OK", data);
         resp.getWriter().write(res.toJson());
     }
 

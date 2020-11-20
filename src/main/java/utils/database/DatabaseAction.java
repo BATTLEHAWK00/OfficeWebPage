@@ -5,5 +5,5 @@ import java.sql.SQLException;
 
 @FunctionalInterface
 public interface DatabaseAction {
-    void action(Connection conn) throws SQLException, InterruptedException;
+    void action(Connection conn) throws SQLException;
 }

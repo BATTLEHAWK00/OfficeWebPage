@@ -11,6 +11,6 @@ public class MainServlet extends HttpServlet {
     public void init() {
         System.out.println("数据库连接初始化...");
         DBConnector.Init();
-        System.out.println("数据库连接初始化完毕.");
+        System.out.println("数据库连接初始化完毕");
     }
 }

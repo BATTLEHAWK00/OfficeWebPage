@@ -2,6 +2,7 @@ package utils.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DBConnector {
     static final String URL = "jdbc:mysql://localhost:3306/office?serverTimezone=UTC";
@@ -11,15 +12,11 @@ public class DBConnector {
     static final int POOL_SIZE_MAX = 16;
     static ConnectionPool connPool;
 
-    public static void getConnection(DatabaseAction action) {
-        try {
-            Connection conn = connPool.pop();
-            System.out.printf("%d/%d\n", connPool.size(), connPool.maxSize());
-            action.action(conn);
-            connPool.push(conn);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public static void getConnection(DatabaseAction action) throws SQLException {
+        Connection conn = connPool.pop();
+        //System.out.printf("%d/%d\n", connPool.size(), connPool.maxSize());
+        action.action(conn);
+        connPool.push(conn);
     }
 
     public static void Init() {
