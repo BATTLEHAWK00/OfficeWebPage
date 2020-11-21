@@ -77,9 +77,10 @@ export default {
 	methods: {
 		onSubmit() {
 			this.$ajax
-				.post("/api/login", this.form, { credentials: true })
+				.post("/api/user/login", this.form, { credentials: true })
 				.then((res) => {
-					console.log(res);
+					if (res.data.message == "OK") alert("登陆成功！");
+					else alert(res.data.message);
 				});
 		},
 		randomNum(minNum, maxNum) {

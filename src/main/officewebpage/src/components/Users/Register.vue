@@ -8,7 +8,6 @@
 						id="username-group"
 						label="用户名:"
 						label-for="username-input"
-						:description="descriptions.username"
 					>
 						<b-form-input
 							id="username-input"
@@ -21,7 +20,6 @@
 						id="passwd-group"
 						label="密码:"
 						label-for="passwd-input"
-						:description="descriptions.passwd"
 					>
 						<b-form-input
 							id="passwd-input"
@@ -36,7 +34,6 @@
 						id="passwd-group-check"
 						label="确认密码:"
 						label-for="passwd-input-check"
-						:description="descriptions.passwdCheck"
 					>
 						<b-form-input
 							id="passwd-input-check"
@@ -45,6 +42,31 @@
 							required
 							placeholder="确认密码"
 							:state="passwdTwiceCheck"
+						></b-form-input>
+					</b-form-group>
+					<b-form-group
+						id="tel-group-input"
+						label="手机号码:"
+						label-for="tel-input"
+					>
+						<b-form-input
+							id="tel-input"
+							v-model="form.tel"
+							required
+							placeholder="输入手机号码"
+							:state="telNumCheck"
+						></b-form-input>
+					</b-form-group>
+					<b-form-group
+						id="majorclass-group-input"
+						label="专业班级:"
+						label-for="majorclass-input"
+					>
+						<b-form-input
+							id="majorclass-input"
+							v-model="form.majorclass"
+							required
+							placeholder="输入专业班级"
 						></b-form-input>
 					</b-form-group>
 					<b-form-group
@@ -82,6 +104,8 @@ export default {
 			form: {
 				username: "",
 				passwd: "",
+				tel: "",
+				majorclass: "",
 			},
 			input: {
 				passwdCheck: "",
@@ -90,18 +114,12 @@ export default {
 			local: {
 				veriCode: "",
 			},
-			descriptions: {
-				username: "用户名请用英文",
-				passwd: "位数介于6-18之间",
-				passwdCheck: "",
-				veriCode: "",
-			},
 		};
 	},
 	methods: {
 		onSubmit() {
-			this.$ajax.post("/api/login", this.form).then((res) => {
-				console.log(res);
+			this.$ajax.post("/api/user/register", this.form).then((res) => {
+				if (res.data.message == "OK") alert("注册成功！");
 			});
 		},
 		randomNum(minNum, maxNum) {
@@ -137,6 +155,11 @@ export default {
 		vericodeCheck() {
 			if (this.input.veriCode == "") return null;
 			return this.local.veriCode == this.input.veriCode;
+		},
+		telNumCheck() {
+			if (this.form.tel == "") return null;
+			if (this.form.tel[0] != "1") return false;
+			return this.form.tel.length == 11;
 		},
 	},
 	beforeMount() {

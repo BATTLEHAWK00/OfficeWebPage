@@ -1,4 +1,4 @@
-package bean.response;
+package bean;
 
 import com.google.gson.Gson;
 

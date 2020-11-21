@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DBConnector {
     private static DBConnector instance;
-    final String URL = "jdbc:mysql://localhost:3306/office?serverTimezone=UTC";
+    final String URL = "jdbc:mysql://localhost:3306/web_demo?serverTimezone=UTC";
     final String USERNAME = "root";
     final String PASSWD = "439920010428YXL.";
     final int POOL_SIZE_INIT = 16;

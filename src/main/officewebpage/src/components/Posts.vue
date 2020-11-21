@@ -5,8 +5,8 @@
 			<ul>
 				<li v-for="i in postsList" class="postItem">
 					<div>
-						<a href="">{{ i.postName }}</a>
-						<span>{{ i.postDate | dateFilter }}</span>
+						<a href="">{{ i.postTitle }}</a>
+						<span>{{ i.postTime | dateFilter }}</span>
 						<p>{{ i.postContent }}</p>
 					</div>
 				</li>
