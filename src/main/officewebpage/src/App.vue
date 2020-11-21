@@ -17,7 +17,7 @@
 					<b-navbar-nav>
 						<b-nav-item to="/">首页</b-nav-item>
 						<b-nav-item to="/posts">动态</b-nav-item>
-						<b-nav-item to="/orderpost">工作预约</b-nav-item>
+						<b-nav-item to="/orderpost">工单预约</b-nav-item>
 						<b-nav-item to="/aboutus">关于我们</b-nav-item>
 					</b-navbar-nav>
 					<!-- Right aligned nav items -->
@@ -38,13 +38,13 @@
 								v-if="isLoggedin == false"
 								variant="primary"
 								style="margin-right: 10px"
-								@click="gotoLogin"
+								@click="goto('/login')"
 								>登录</b-button
 							>
 							<b-button
 								v-if="isLoggedin == false"
 								variant="secondary"
-								@click="gotoRegister"
+								@click="goto('/register')"
 								>注册</b-button
 							>
 						</b-navbar-nav>
@@ -66,11 +66,8 @@ export default {
 		};
 	},
 	methods: {
-		gotoLogin() {
-			this.$router.replace("/login");
-		},
-		gotoRegister() {
-			this.$router.replace("/register");
+		goto(route) {
+			this.$router.replace(route);
 		},
 	},
 };

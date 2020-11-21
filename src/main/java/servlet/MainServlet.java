@@ -1,6 +1,6 @@
-package controller;
+package servlet;
 
-import utils.database.DBConnector;
+import utils.jdbcutils.connection.DBConnector;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServlet;
 public class MainServlet extends HttpServlet {
     @Override
     public void init() {
-        System.out.println("数据库连接初始化...");
-        DBConnector.Init();
-        System.out.println("数据库连接初始化完毕");
+        DBConnector.get().Init();
     }
 }

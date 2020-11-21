@@ -1,4 +1,4 @@
-package utils.database;
+package utils.jdbcutils.connection;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -45,7 +45,7 @@ public class ConnectionPool {
                 connPool.pop();
             return connPool.pop();
         } catch (EmptyStackException e) {
-            System.out.println("数据库连接池已满,考虑增加连接池容量");
+            System.err.println("数据库连接池已满,考虑增加连接池容量");
             return getConnection.getConn();
         }
     }

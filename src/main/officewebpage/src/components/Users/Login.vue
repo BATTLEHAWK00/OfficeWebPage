@@ -76,9 +76,11 @@ export default {
 	},
 	methods: {
 		onSubmit() {
-			this.$ajax.post("/api/login", this.form).then((res) => {
-				console.log(res);
-			});
+			this.$ajax
+				.post("/api/login", this.form, { credentials: true })
+				.then((res) => {
+					console.log(res);
+				});
 		},
 		randomNum(minNum, maxNum) {
 			switch (arguments.length) {
@@ -96,16 +98,15 @@ export default {
 					break;
 			}
 		},
-    },
-    computed:{
+	},
+	computed: {
 		vericodeCheck() {
-			if (this.input.veriCode == "")
-                return null;
-            return this.local.veriCode == this.input.veriCode;
-        },
-    },
+			if (this.input.veriCode == "") return null;
+			return this.local.veriCode == this.input.veriCode;
+		},
+	},
 	beforeMount() {
-		this.local.veriCode = this.randomNum(100000, 999999);
+		this.local.veriCode = this.randomNum(100000, 999999).toString();
 	},
 };
 </script>

@@ -4,7 +4,7 @@ import Utils from '../Utils'
 import Main from '@/components/Main'
 import Posts from '@/components/Posts'
 import Aboutus from '@/components/Aboutus'
-import OrderPost from '@/components/OrderPost'
+import Order from '@/components/Order'
 import Login from '@/components/Users/Login'
 import Reg from '@/components/Users/Register'
 
@@ -29,8 +29,8 @@ const router = new Router({
     },
     {
       path: '/orderpost',
-      name: '工作预约',
-      component: OrderPost
+      name: '工单',
+      component: Order
     },
     {
       path: '/login',

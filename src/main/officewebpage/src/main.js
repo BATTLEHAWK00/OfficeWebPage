@@ -13,6 +13,7 @@ import Utils from './Utils'
 
 Vue.config.productionTip = false
 Vue.use(bootstrapvue)
+axios.defaults.withCredentials=true;
 Vue.prototype.$ajax = axios
 Vue.prototype.GlobalVar = GlobalVar
 Vue.prototype.Utils = Utils

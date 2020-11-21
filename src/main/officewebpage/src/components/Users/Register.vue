@@ -8,6 +8,7 @@
 						id="username-group"
 						label="用户名:"
 						label-for="username-input"
+						:description="descriptions.username"
 					>
 						<b-form-input
 							id="username-input"
@@ -20,6 +21,7 @@
 						id="passwd-group"
 						label="密码:"
 						label-for="passwd-input"
+						:description="descriptions.passwd"
 					>
 						<b-form-input
 							id="passwd-input"
@@ -34,6 +36,7 @@
 						id="passwd-group-check"
 						label="确认密码:"
 						label-for="passwd-input-check"
+						:description="descriptions.passwdCheck"
 					>
 						<b-form-input
 							id="passwd-input-check"
@@ -87,6 +90,12 @@ export default {
 			local: {
 				veriCode: "",
 			},
+			descriptions: {
+				username: "用户名请用英文",
+				passwd: "位数介于6-18之间",
+				passwdCheck: "",
+				veriCode: "",
+			},
 		};
 	},
 	methods: {
@@ -94,40 +103,45 @@ export default {
 			this.$ajax.post("/api/login", this.form).then((res) => {
 				console.log(res);
 			});
-        },
-        randomNum(minNum,maxNum){ 
-            switch(arguments.length){ 
-                case 1: 
-                    return parseInt(Math.random()*minNum+1,10); 
-                    break; 
-                case 2: 
-                    return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10); 
-                    break; 
-                default: 
-                    return 0; 
-                break;
-            }
-        } 
+		},
+		randomNum(minNum, maxNum) {
+			switch (arguments.length) {
+				case 1:
+					return parseInt(Math.random() * minNum + 1, 10);
+					break;
+				case 2:
+					return parseInt(
+						Math.random() * (maxNum - minNum + 1) + minNum,
+						10
+					);
+					break;
+				default:
+					return 0;
+					break;
+			}
+		},
 	},
 	computed: {
 		passwdCheck() {
-			if (this.form.passwd == "") return null;
+			if (this.form.passwd == "") {
+				return null;
+			}
 			return this.form.passwd.length > 6 && this.form.passwd.length < 18;
 		},
 		passwdTwiceCheck() {
-			if (this.form.passwd == "" || this.input.passwdCheck == "")
+			if (this.form.passwd == "" || this.input.passwdCheck == "") {
 				return null;
+			}
 			return this.form.passwd == this.input.passwdCheck;
 		},
 		vericodeCheck() {
-			if (this.input.veriCode == "")
-                return null;
-            return this.local.veriCode == this.input.veriCode;
-        },
-    },
-    beforeMount(){
-        this.local.veriCode = this.randomNum(100000,999999)
-    }
+			if (this.input.veriCode == "") return null;
+			return this.local.veriCode == this.input.veriCode;
+		},
+	},
+	beforeMount() {
+		this.local.veriCode = this.randomNum(100000, 999999);
+	},
 };
 </script>
 <style scoped>
