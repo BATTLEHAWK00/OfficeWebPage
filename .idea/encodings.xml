@@ -4,5 +4,6 @@
     <file url="file://$PROJECT_DIR$/src/main/java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/dao/PostsDao.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/utils/jdbcutils/sql/SQLOperation.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF" charset="GBK" />
   </component>
 </project>
