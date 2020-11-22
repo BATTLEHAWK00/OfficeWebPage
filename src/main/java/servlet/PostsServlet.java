@@ -13,7 +13,6 @@ import java.io.IOException;
 public class PostsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType("application/json; charset=UTF-8");
         //JsonArray json = new JsonArray();
         resp.getWriter().write(new Gson().toJson(new PostsDao().getPosts()));
     }

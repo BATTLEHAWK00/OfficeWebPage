@@ -3,6 +3,7 @@ package servlet;
 import bean.Response;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import dao.OrdersDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,15 +16,20 @@ import java.io.IOException;
 public class OrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doPost(req, resp);
+        Response res = new Response();
+        if (req.getSession().getAttribute("uid") != null) {
+            res.SetData(new OrdersDao().getOrdersOfUid((String) req.getSession().getAttribute("uid")));
+            res.SetMessage("OK");
+        } else {
+            res.SetMessage("找不到用户或会话失效！");
+            resp.setStatus(400);
+        }
+        resp.getWriter().write(res.toJson());
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setCharacterEncoding("utf-8");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         JsonObject jsonObject = JsonParser.parseReader(req.getReader()).getAsJsonObject();
-        Response res = new Response("OK");
-        System.out.println(jsonObject.toString());
-        resp.getWriter().write(res.toJson());
+
     }
 }

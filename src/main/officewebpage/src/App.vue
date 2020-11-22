@@ -17,7 +17,9 @@
 					<b-navbar-nav>
 						<b-nav-item to="/">首页</b-nav-item>
 						<b-nav-item to="/posts">动态</b-nav-item>
-						<b-nav-item to="/orderpost">工单预约</b-nav-item>
+						<b-nav-item to="/orderpost" v-if="isLoggedin"
+							>工单预约</b-nav-item
+						>
 						<b-nav-item to="/aboutus">关于我们</b-nav-item>
 					</b-navbar-nav>
 					<!-- Right aligned nav items -->
@@ -31,7 +33,9 @@
 							<template #button-content>
 								<em>{{ userName }}</em>
 							</template>
-							<b-dropdown-item href="#">注销</b-dropdown-item>
+							<b-dropdown-item @click="logout"
+								>注销</b-dropdown-item
+							>
 						</b-nav-item-dropdown>
 						<b-navbar-nav right v-else key="users">
 							<b-button
@@ -52,7 +56,7 @@
 				</b-collapse>
 			</b-navbar>
 		</div>
-		<router-view />
+		<router-view @onLoginSuccess="updateUserState" />
 	</div>
 </template>
 
@@ -69,6 +73,22 @@ export default {
 		goto(route) {
 			this.$router.replace(route);
 		},
+		updateUserState() {
+			var userStr = window.sessionStorage.getItem("user");
+			console.log(userStr);
+			if (userStr != null) {
+				this.isLoggedin = true;
+				var userObj = JSON.parse(userStr);
+				this.userName = userObj.username;
+			}
+		},
+		logout() {
+			window.sessionStorage.removeItem("user");
+			location.replace("/");
+		},
+	},
+	beforeMount() {
+		this.updateUserState();
 	},
 };
 </script>

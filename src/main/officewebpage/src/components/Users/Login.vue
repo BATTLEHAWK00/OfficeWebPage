@@ -79,8 +79,24 @@ export default {
 			this.$ajax
 				.post("/api/user/login", this.form, { credentials: true })
 				.then((res) => {
-					if (res.data.message == "OK") alert("登陆成功！");
-					else alert(res.data.message);
+					if (res.data.message == "OK") {
+						window.sessionStorage.setItem(
+							"user",
+							JSON.stringify(res.data.data)
+						);
+						this.$emit("onLoginSuccess");
+						alert("登陆成功！");
+						location.replace("/");
+					} else alert(res.data.message);
+				})
+				.catch((err) => {
+					if (err.response) {
+						alert(
+							"登陆失败！错误信息：" + err.response.data.message
+						);
+					} else {
+						alert("登陆失败！");
+					}
 				});
 		},
 		randomNum(minNum, maxNum) {

@@ -5,6 +5,7 @@ import bean.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dao.UsersDao;
+import dao.exceptions.LoginException;
 import utils.stdio.LoggerUtil;
 
 import javax.servlet.annotation.WebServlet;
@@ -17,21 +18,28 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setCharacterEncoding("utf-8");
         JsonObject jsonObject = JsonParser.parseReader(req.getReader()).getAsJsonObject();
         String username = jsonObject.get("username").getAsString();
         String passwd = jsonObject.get("passwd").getAsString();
         JsonObject data = new JsonObject();
         Response res;
-        User user = new UsersDao().getUser(username, passwd);
-        if (user != null) {
+        User user = null;
+        res = new Response();
+        try {
+            user = new UsersDao().getUser(username, passwd);
             if (req.getSession().getAttribute("uid") == null)
                 req.getSession().setAttribute("uid", user.getUid());
-            res = new Response("OK", data);
-        } else {
-            res = new Response("验证失败！");
+            res.SetMessage("OK");
+            res.SetData(user);
+            System.out.println(user.toString());
+            LoggerUtil.Log("用户登录：" + user.getUsername());
+        } catch (LoginException e) {
+            res.SetMessage(e.getMessage());
+            resp.setStatus(400);
+        } catch (Exception e) {
+            resp.setStatus(500);
+            return;
         }
-        LoggerUtil.Log("用户登录：" + user.getUsername());
         resp.getWriter().write(res.toJson());
     }
 

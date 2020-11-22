@@ -1,16 +1,16 @@
 package utils.jdbcutils.sql;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class SQLOperation {
     private final Connection conn;
     private String sql;
-    private Statement statement;
+    private PreparedStatement statement;
 
     public SQLOperation(Connection connection) {
         conn = connection;
@@ -27,7 +27,7 @@ public class SQLOperation {
 
     private void execute(SQLAction action) throws SQLException {
         try {
-            statement = conn.createStatement();
+            statement = conn.prepareStatement(sql);
             action.action();
         } catch (SQLException e) {
             System.err.println("SqlÓï¾äÖ´ÐÐÊ§°Ü£¡");
@@ -47,8 +47,8 @@ public class SQLOperation {
     public void ExecuteQuery(SQLQueryAction action) throws SQLException {
         ResultSet resultSet;
         try {
-            statement = conn.createStatement();
-            resultSet = statement.executeQuery(sql);
+            statement = conn.prepareStatement(sql);
+            resultSet = statement.executeQuery();
         } catch (SQLException e) {
             System.err.println("Êý¾Ý¿â²éÑ¯Ê§°Ü£¡´íÎóÐÅÏ¢:");
             System.err.println(e.getMessage());
@@ -70,11 +70,11 @@ public class SQLOperation {
     }
 
     public int ExecuteUpdate() throws SQLException {
-        AtomicInteger effectedrows = new AtomicInteger();
+        AtomicInteger effectedRows = new AtomicInteger();
         execute(() -> {
-            effectedrows.set(statement.executeUpdate(sql));
+            effectedRows.set(statement.executeUpdate());
         });
-        return effectedrows.get();
+        return effectedRows.get();
     }
 
     interface SQLAction {

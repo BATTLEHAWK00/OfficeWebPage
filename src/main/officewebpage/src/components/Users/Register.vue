@@ -88,6 +88,7 @@
 							type="submit"
 							variant="primary"
 							style="width: 100pt"
+							v-show="formCheck"
 						>
 							注册
 						</b-button>
@@ -118,9 +119,39 @@ export default {
 	},
 	methods: {
 		onSubmit() {
-			this.$ajax.post("/api/user/register", this.form).then((res) => {
-				if (res.data.message == "OK") alert("注册成功！");
-			});
+			console.log("asd")
+			if (!this.checkForm()) return;
+			this.$ajax
+				.post("/api/user/register", this.form)
+				.then((res) => {
+					if (res.data.message == "OK") alert("注册成功！");
+				})
+				.catch((err) => {
+					if (err.response) {
+						alert(
+							"注册失败！错误信息：" + err.response.data.message
+						);
+					} else alert("注册失败！");
+				});
+		},
+		checkForm() {
+			if (!this.passwdCheck) {
+				alert("密码不符合要求！");
+				return false;
+			}
+			if (!this.passwdTwiceCheck) {
+				alert("确认密码不符！");
+				return false;
+			}
+			if (!this.vericodeCheck) {
+				alert("验证码填写错误！");
+				return false;
+			}
+			if (!this.telNumCheck) {
+				alert("电话号码填写错误！");
+				return false;
+			}
+			return true
 		},
 		randomNum(minNum, maxNum) {
 			switch (arguments.length) {
@@ -161,9 +192,27 @@ export default {
 			if (this.form.tel[0] != "1") return false;
 			return this.form.tel.length == 11;
 		},
+		formCheck() {
+			let checkList = [
+				this.passwdCheck,
+				this.passwdTwiceCheck,
+				this.vericodeCheck,
+				this.telNumCheck,
+			];
+			let flag = true;
+			for (var i of checkList)
+				if (i == false || i == null) {
+					flag = false;
+					break;
+				}
+			return flag;
+		},
+		nullCheck(tmp) {
+			return tmp == "";
+		},
 	},
 	beforeMount() {
-		this.local.veriCode = this.randomNum(100000, 999999);
+		this.local.veriCode = this.randomNum(100000, 999999).toString();
 	},
 };
 </script>

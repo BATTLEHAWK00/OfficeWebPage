@@ -11,7 +11,7 @@
  Target Server Version : 80019
  File Encoding         : 65001
 
- Date: 21/11/2020 22:26:36
+ Date: 22/11/2020 01:15:37
 */
 
 SET NAMES utf8mb4;
@@ -76,10 +76,10 @@ CREATE TABLE `passages`  (
   `views` int(0) NOT NULL DEFAULT 0 COMMENT '点击量',
   `photo_src` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图片路径',
   PRIMARY KEY (`passage_id`) USING BTREE,
-  INDEX `auth`(`author`) USING BTREE,
   INDEX `category`(`category`) USING BTREE,
-  CONSTRAINT `auth` FOREIGN KEY (`author`) REFERENCES `user` (`name`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `category` FOREIGN KEY (`category`) REFERENCES `passage_category` (`cate_desc`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  INDEX `author`(`author`) USING BTREE,
+  CONSTRAINT `category` FOREIGN KEY (`category`) REFERENCES `passage_category` (`cate_desc`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `author` FOREIGN KEY (`author`) REFERENCES `user` (`UID`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -107,7 +107,8 @@ CREATE TABLE `user`  (
   `idendity` enum('0','1') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '身份识别码',
   `reg_time` datetime(0) NOT NULL COMMENT '注册时间',
   PRIMARY KEY (`UID`) USING BTREE,
-  INDEX `name`(`name`) USING BTREE
+  INDEX `name`(`name`) USING BTREE,
+  INDEX `name_2`(`name`, `UID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

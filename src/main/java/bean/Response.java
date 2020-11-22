@@ -16,6 +16,9 @@ public class Response {
         data = new Object();
     }
 
+    public Response() {
+    }
+
     public void SetMessage(String message) {
         this.message = message;
     }

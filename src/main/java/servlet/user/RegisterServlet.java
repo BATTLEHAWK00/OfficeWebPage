@@ -5,9 +5,9 @@ import bean.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dao.UsersDao;
+import dao.exceptions.RegisterException;
 import utils.stdio.LoggerUtil;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,15 +17,24 @@ import java.io.IOException;
 @WebServlet("/user/register")
 public class RegisterServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         JsonObject jsonObject = JsonParser.parseReader(req.getReader()).getAsJsonObject();
-        User user = new User();
-        user.setUsername(jsonObject.get("username").getAsString());
-        user.setTel(jsonObject.get("tel").getAsString());
-        user.setMajorClass(jsonObject.get("majorclass").getAsString());
-        new UsersDao().RegisterUser(user, jsonObject.get("passwd").getAsString());
-        Response res = new Response("OK");
-        LoggerUtil.Log("用户注册：" + user.getUsername());
+        Response res = new Response();
+        try {
+            User user = new User();
+            user.setUsername(jsonObject.get("username").getAsString().trim());
+            user.setTel(jsonObject.get("tel").getAsString().trim());
+            user.setMajorClass(jsonObject.get("majorclass").getAsString().trim());
+            new UsersDao().RegisterUser(user, jsonObject.get("passwd").getAsString().trim());
+            res.SetMessage("OK");
+            LoggerUtil.Logf("用户注册：%s(uid:%s)", user.getUsername(), user.getUid());
+        } catch (RegisterException e) {
+            res.SetMessage(e.getMessage());
+            resp.setStatus(400);
+        } catch (Exception e) {
+            resp.setStatus(500);
+            return;
+        }
         resp.getWriter().write(res.toJson());
     }
 }

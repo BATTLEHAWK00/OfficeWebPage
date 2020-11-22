@@ -32,6 +32,13 @@ export default {
 		var that = this;
 		this.$ajax.get("/api/posts").then((res) => {
 			that.postsList = res.data;
+			if (res.data.length == 0) {
+				that.postsList.push({
+					postTitle: "暂时没有动态哦！",
+					postContent:"",
+					
+				});
+			}
 		});
 	},
 };

@@ -4,7 +4,17 @@
 			hover
 			:items="table.items"
 			:fields="table.fields"
-		></b-table>
+			:busy="isBusy"
+			class="mt-3"
+		>
+			<template #cell(status)="data">
+				<h6>
+					<b-badge :variant="statusBadgeColor(data.item.state)">{{
+						data.item.state
+					}}</b-badge>
+				</h6>
+			</template>
+		</b-table>
 	</div>
 </template>
 
@@ -13,52 +23,63 @@ export default {
 	name: "orderquery",
 	data() {
 		return {
+			isBusy: true,
 			table: {
 				fields: [
 					{
 						label: "工单号",
-						key: "orderNumber",
+						key: "oid",
 					},
 					{
 						label: "工单类型",
-						key: "orderType",
-                    },
-                    {
-						label: "当前状态",
-						key: "orderStatus",
-                    },
-                    {
+						key: "type",
+					},
+					{
 						label: "提交时间",
-						key: "orderDate",
-                    }
-				],
-				items: [
-					{
-						orderNumber: 40,
-						orderType: "Dickerson",
-                        orderStatus: "Macdonald",
-                        orderDate:"sadasdas"
+						key: "submitTime",
 					},
 					{
-						orderNumber: 40,
-						orderType: "Dickerson",
-                        orderStatus: "Macdonald",
-                        orderDate:"sadasdas"
-                    },
+						label: "更新时间",
+						key: "respTime",
+					},
 					{
-						orderNumber: 40,
-						orderType: "Dickerson",
-                        orderStatus: "Macdonald",
-                        orderDate:"sadasdas"
-					},					{
-						orderNumber: 40,
-						orderType: "Dickerson",
-                        orderStatus: "Macdonald",
-                        orderDate:"sadasdas"
+						label: "当前状态",
+						key: "status",
 					},
 				],
+				items: [],
 			},
 		};
+	},
+	methods: {
+		statusBadgeColor(state) {
+			switch (state) {
+				case "已提交":
+				case "已受理":
+					return "primary";
+				case "待付款":
+				case "待完善":
+					return "danger";
+				case "已完成":
+				case "已完结":
+					return "success";
+				default:
+					return "secondary";
+			}
+		},
+	},
+	beforeMount() {
+		var that = this;
+		setTimeout(() => {
+			this.$ajax.get("/api/order").then((res) => {
+				if (res.data.message == "OK") {
+					that.table.items = res.data.data;
+					setTimeout(() => {
+						that.isBusy = false;
+					}, 100);
+				}
+			});
+		}, 200);
 	},
 };
 </script>

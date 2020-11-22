@@ -2,12 +2,24 @@
 	<div>
 		<b-form @submit="onSubmit" @reset="onReset">
 			<b-form-group
-				id="input-group-1"
+				id="type-select-group"
+				label="工单类型:"
+				label-for="type-select"
+			>
+				<b-form-select
+					id="type-select"
+					v-model="form.orderType"
+					:options="orderTypes"
+					required
+				></b-form-select>
+			</b-form-group>
+			<b-form-group
+				id="desc-input-group"
 				label="工单描述:"
-				label-for="input-1"
+				label-for="desc-input"
 			>
 				<b-form-textarea
-					id="textarea"
+					id="desc-input"
 					v-model="form.orderDesc"
 					placeholder="请输入..."
 					rows="3"
@@ -15,18 +27,18 @@
 					required
 				></b-form-textarea>
 			</b-form-group>
-
 			<b-form-group
-				id="input-group-3"
-				label="工单类型:"
-				label-for="input-3"
+				id="imgs-input-group"
+				label="图片描述:"
+				label-for="imgs-input"
 			>
-				<b-form-select
-					id="input-3"
-					v-model="form.orderType"
-					:options="orderTypes"
-					required
-				></b-form-select>
+				<b-form-file
+					id="imgs-input"
+					v-model="file1"
+					:state="Boolean(file1)"
+					placeholder="将图片拖拽到这里或手动选择..."
+					drop-placeholder="将图片拖拽到这里哟！"
+				></b-form-file>
 			</b-form-group>
 			<b-button type="submit" variant="primary">提交</b-button>
 			<b-button type="reset" variant="danger">重置</b-button>
