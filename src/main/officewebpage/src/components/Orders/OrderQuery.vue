@@ -5,7 +5,6 @@
 			:items="table.items"
 			:fields="table.fields"
 			:busy="isBusy"
-			class="mt-3"
 		>
 			<template #cell(status)="data">
 				<h6>
@@ -13,6 +12,12 @@
 						data.item.state
 					}}</b-badge>
 				</h6>
+			</template>
+			<template #cell(submitTime)="data">
+				{{ data.item.submitTime | dateFilter }}
+			</template>
+			<template #cell(respTime)="data">
+				{{ data.item.respTime | dateFilter }}
 			</template>
 		</b-table>
 	</div>
@@ -68,17 +73,38 @@ export default {
 			}
 		},
 	},
+	filters: {
+		dateFilter(tstamp) {
+			if (tstamp == 0) return "无";
+			return new Date(parseInt(tstamp))
+				.toLocaleString()
+				.replace(/:\d{1,2}$/, " ");
+		},
+	},
 	beforeMount() {
 		var that = this;
 		setTimeout(() => {
-			this.$ajax.get("/api/order").then((res) => {
-				if (res.data.message == "OK") {
-					that.table.items = res.data.data;
-					setTimeout(() => {
-						that.isBusy = false;
-					}, 100);
-				}
-			});
+			this.$ajax
+				.get("/api/order", {
+					params: {
+						uid: JSON.parse(window.sessionStorage.getItem("user"))
+							.uid,
+					},
+				})
+				.then((res) => {
+					if (res.data.message == "OK") {
+						that.table.items = res.data.data;
+						if (that.table.items.length == 0)
+							that.table.items.push({
+								type: "你还没有提交工单哦！",
+								submitTime: 0,
+								respTime: 0,
+							});
+						setTimeout(() => {
+							that.isBusy = false;
+						}, 100);
+					}
+				});
 		}, 200);
 	},
 };

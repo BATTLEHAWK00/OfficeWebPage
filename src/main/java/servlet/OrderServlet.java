@@ -1,9 +1,11 @@
 package servlet;
 
+import bean.Order;
 import bean.Response;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dao.OrdersDao;
+import utils.stdio.LoggerUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,8 +19,11 @@ public class OrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Response res = new Response();
-        if (req.getSession().getAttribute("uid") != null) {
-            res.SetData(new OrdersDao().getOrdersOfUid((String) req.getSession().getAttribute("uid")));
+        String uid = null;
+        if (req.getParameter("uid") != null)
+            uid = req.getParameter("uid");
+        if (uid != null) {
+            res.SetData(new OrdersDao().getOrdersOfUid(uid));
             res.SetMessage("OK");
         } else {
             res.SetMessage("找不到用户或会话失效！");
@@ -26,10 +31,26 @@ public class OrderServlet extends HttpServlet {
         }
         resp.getWriter().write(res.toJson());
     }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         JsonObject jsonObject = JsonParser.parseReader(req.getReader()).getAsJsonObject();
-
+        Response res = new Response();
+        try {
+            Order order = new Order();
+            String uid = (String) req.getSession().getAttribute("uid");
+            if (uid == null) {
+                resp.setStatus(400);
+                return;
+            }
+            order.setUid(uid);
+            order.setType(jsonObject.get("orderType").getAsString());
+            order.setDesc(jsonObject.get("orderDesc").getAsString());
+            new OrdersDao().postOrder(order, uid);
+            res.SetMessage("OK");
+            LoggerUtil.Logf("工单提交：OID(%s),UID(%s)", order.getOid(), order.getUid());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        resp.getWriter().write(res.toJson());
     }
 }

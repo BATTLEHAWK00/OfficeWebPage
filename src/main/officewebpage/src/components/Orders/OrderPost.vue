@@ -71,19 +71,21 @@ export default {
 		};
 	},
 	methods: {
-		onSubmit(evt) {
-			evt.preventDefault();
+		onSubmit() {
+			var that = this;
 			this.$ajax
 				.post("/api/order", this.form)
 				.then((res) => {
-					if (res.data.message == "OK") alert("提交成功！");
+					if (res.data.message == "OK") {
+						alert("提交成功！");
+						that.onReset();
+					}
 				})
 				.catch((res) => {
 					alert("提交失败！原因：" + res.data.message);
 				});
 		},
-		onReset(evt) {
-			evt.preventDefault();
+		onReset() {
 			this.form.orderDesc = "";
 			this.form.orderType = null;
 		},

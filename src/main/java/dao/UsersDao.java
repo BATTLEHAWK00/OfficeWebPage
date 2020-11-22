@@ -56,7 +56,7 @@ public class UsersDao {
         try {
             DBConnector.get().getConnection(conn -> {
                 var query = new SQLOperation(conn);
-                String sql = String.format("SELECT * FROM 'user' WHERE UID = '%s'", uid);
+                String sql = String.format("SELECT * FROM user WHERE UID = '%s'", uid);
                 query.setSql(sql);
                 query.ExecuteQuery(res -> {
                     if (res.next()) {

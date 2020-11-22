@@ -31,7 +31,6 @@ public class LoginServlet extends HttpServlet {
                 req.getSession().setAttribute("uid", user.getUid());
             res.SetMessage("OK");
             res.SetData(user);
-            System.out.println(user.toString());
             LoggerUtil.Log("ÓÃ»§µÇÂ¼£º" + user.getUsername());
         } catch (LoginException e) {
             res.SetMessage(e.getMessage());

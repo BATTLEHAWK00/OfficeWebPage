@@ -31,7 +31,7 @@
 						>
 							<!-- Using 'button-content' slot -->
 							<template #button-content>
-								<em>{{ userName }}</em>
+								<em>你好呀,{{ userName }}</em>
 							</template>
 							<b-dropdown-item @click="logout"
 								>注销</b-dropdown-item

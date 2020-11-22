@@ -26,7 +26,7 @@
 							v-model="form.passwd"
 							type="password"
 							required
-							placeholder="输入用户名"
+							placeholder="输入密码"
 						></b-form-input>
 					</b-form-group>
 					<b-form-group
