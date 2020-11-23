@@ -2,10 +2,11 @@ package servlet;
 
 import bean.Order;
 import bean.Response;
+import bean.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dao.OrdersDao;
-import utils.stdio.LoggerUtil;
+import utils.LoggerUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -37,15 +38,15 @@ public class OrderServlet extends HttpServlet {
         Response res = new Response();
         try {
             Order order = new Order();
-            String uid = (String) req.getSession().getAttribute("uid");
-            if (uid == null) {
+            User user = (User) req.getSession().getAttribute("loggedUser");
+            if (user == null) {
                 resp.setStatus(400);
                 return;
             }
-            order.setUid(uid);
+            order.setUid(user.getUid());
             order.setType(jsonObject.get("orderType").getAsString());
             order.setDesc(jsonObject.get("orderDesc").getAsString());
-            new OrdersDao().postOrder(order, uid);
+            new OrdersDao().postOrder(order, user.getUid());
             res.SetMessage("OK");
             LoggerUtil.Logf("工单提交：OID(%s),UID(%s)", order.getOid(), order.getUid());
         } catch (Exception e) {

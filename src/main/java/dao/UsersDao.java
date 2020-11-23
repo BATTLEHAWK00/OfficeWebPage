@@ -3,9 +3,10 @@ package dao;
 import bean.User;
 import dao.exceptions.LoginException;
 import dao.exceptions.RegisterException;
+import utils.SecurityUtil;
+import utils.StringUtil;
 import utils.jdbcutils.connection.DBConnector;
 import utils.jdbcutils.sql.SQLOperation;
-import utils.stringutils.StringUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,10 +18,11 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class UsersDao {
     public User getUser(String username, String passwd) throws LoginException, SQLException {
+        String passwd_md5 = SecurityUtil.getSaltMD5(passwd, username);
         AtomicReference<User> user = new AtomicReference<>();
         DBConnector.get().getConnection(conn -> {
             var query = new SQLOperation(conn);
-            String sql = String.format("SELECT * FROM user WHERE name='%s' and passwd='%s'", username, passwd);
+            String sql = String.format("SELECT * FROM users WHERE name='%s' and passwd='%s'", username, passwd_md5);
             query.setSql(sql);
             query.ExecuteQuery(res -> {
                 if (res.next()) {
@@ -31,6 +33,19 @@ public class UsersDao {
         if (user.get() == null)
             throw new LoginException("用户名或密码不正确！");
         return user.get();
+    }
+
+    public void setLoginTime(String uid) {
+        try {
+            DBConnector.get().getConnection(conn -> {
+                var query = new SQLOperation(conn);
+                String sql = String.format("UPDATE users SET login_time=now() WHERE UID='%s'", uid);
+                query.setSql(sql);
+                query.ExecuteUpdate();
+            });
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     public List<User> getUsers() {
@@ -56,7 +71,7 @@ public class UsersDao {
         try {
             DBConnector.get().getConnection(conn -> {
                 var query = new SQLOperation(conn);
-                String sql = String.format("SELECT * FROM user WHERE UID = '%s'", uid);
+                String sql = String.format("SELECT * FROM users WHERE UID = '%s'", uid);
                 query.setSql(sql);
                 query.ExecuteQuery(res -> {
                     if (res.next()) {
@@ -75,7 +90,7 @@ public class UsersDao {
         try {
             DBConnector.get().getConnection(conn -> {
                 var query = new SQLOperation(conn);
-                String sql = String.format("SELECT * FROM user WHERE name='%s'", name);
+                String sql = String.format("SELECT * FROM users WHERE name='%s'", name);
                 query.setSql(sql);
                 query.ExecuteQuery(res -> {
                     if (res.next()) {
@@ -101,6 +116,7 @@ public class UsersDao {
 
     public void RegisterUser(User user, String passwd) throws RegisterException {
         String uid;
+        String passwd_md5 = SecurityUtil.getSaltMD5(passwd, user.getUsername());
         if (getUserByName(user.getUsername()) != null) {
             throw new RegisterException("该用户名已存在！");
         }
@@ -111,11 +127,11 @@ public class UsersDao {
         try {
             DBConnector.get().getConnection(conn -> {
                 var query = new SQLOperation(conn);
-                String sql = String.format("INSERT INTO user(UID,name,passwd,major_class,tel,reg_time)" +
+                String sql = String.format("INSERT INTO users(UID,name,passwd,major_class,tel,reg_time)" +
                                 " VALUES('%s','%s','%s','%s','%s',%s)",
                         user.getUid(),
                         user.getUsername(),
-                        passwd,
+                        passwd_md5,
                         user.getMajorClass(),
                         user.getTel(),
                         "now()"
@@ -133,7 +149,7 @@ public class UsersDao {
         try {
             DBConnector.get().getConnection(conn -> {
                 var query = new SQLOperation(conn);
-                String sql = "SELECT COUNT(*) FROM user";
+                String sql = "SELECT COUNT(*) FROM users";
                 query.setSql(sql);
                 query.ExecuteQuery(res -> {
                     if (res.next())

@@ -73,7 +73,6 @@
 						id="passwd-group-check"
 						label="验证码:"
 						label-for="vericode-check"
-						:description="local.veriCode"
 					>
 						<b-form-input
 							id="vericode-check"
@@ -83,12 +82,20 @@
 							:state="vericodeCheck"
 						></b-form-input>
 					</b-form-group>
+					<b-form-group>
+						<b-img
+							alt="验证码"
+							:src="local.veriCodeSrc"
+							@click="refreshVeriCode"
+							class="vericode-img"
+						>
+						</b-img>
+					</b-form-group>
 					<div style="text-align: center">
 						<b-button
 							type="submit"
 							variant="primary"
 							style="width: 100pt"
-							v-show="formCheck"
 						>
 							注册
 						</b-button>
@@ -113,18 +120,22 @@ export default {
 				veriCode: "",
 			},
 			local: {
-				veriCode: "",
+				veriCodeSrc: "/api/vericode",
 			},
 		};
 	},
 	methods: {
-		onSubmit() {
-			console.log("asd")
+		onSubmit(evt) {
+			evt.preventDefault();
+			console.log("asd");
 			if (!this.checkForm()) return;
 			this.$ajax
 				.post("/api/user/register", this.form)
 				.then((res) => {
-					if (res.data.message == "OK") alert("注册成功！");
+					if (res.data.message == "OK") {
+						alert("注册成功！");
+						location.replace("/");
+					}
 				})
 				.catch((err) => {
 					if (err.response) {
@@ -143,15 +154,11 @@ export default {
 				alert("确认密码不符！");
 				return false;
 			}
-			if (!this.vericodeCheck) {
-				alert("验证码填写错误！");
-				return false;
-			}
 			if (!this.telNumCheck) {
 				alert("电话号码填写错误！");
 				return false;
 			}
-			return true
+			return true;
 		},
 		randomNum(minNum, maxNum) {
 			switch (arguments.length) {
@@ -169,23 +176,25 @@ export default {
 					break;
 			}
 		},
+		refreshVeriCode() {
+			this.local.veriCodeSrc =
+				"/api/vericode?num=" + this.randomNum(100, 999);
+		},
 	},
 	computed: {
 		passwdCheck() {
 			if (this.form.passwd == "") {
 				return null;
 			}
-			return this.form.passwd.length > 6 && this.form.passwd.length < 18;
+			return (
+				this.form.passwd.length >= 6 && this.form.passwd.length <= 18
+			);
 		},
 		passwdTwiceCheck() {
 			if (this.form.passwd == "" || this.input.passwdCheck == "") {
 				return null;
 			}
 			return this.form.passwd == this.input.passwdCheck;
-		},
-		vericodeCheck() {
-			if (this.input.veriCode == "") return null;
-			return this.local.veriCode == this.input.veriCode;
 		},
 		telNumCheck() {
 			if (this.form.tel == "") return null;
@@ -196,7 +205,6 @@ export default {
 			let checkList = [
 				this.passwdCheck,
 				this.passwdTwiceCheck,
-				this.vericodeCheck,
 				this.telNumCheck,
 			];
 			let flag = true;
@@ -211,9 +219,7 @@ export default {
 			return tmp == "";
 		},
 	},
-	beforeMount() {
-		this.local.veriCode = this.randomNum(100000, 999999).toString();
-	},
+	beforeMount() {},
 };
 </script>
 <style scoped>
@@ -233,5 +239,9 @@ export default {
 }
 .register-card:hover {
 	box-shadow: 0px 0px 5px rgb(179, 179, 179);
+}
+.vericode-img {
+	cursor: pointer;
+	max-width: 70%;
 }
 </style>

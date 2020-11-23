@@ -11,6 +11,7 @@ public class Post {
     String photo_src;
     int views;
     long postTime;
+    String isPublished;
 
     public void setAuthor(User author) {
         this.author = author;
@@ -40,8 +41,24 @@ public class Post {
         this.views = views;
     }
 
+
     public void setPostTime(long postTime) {
         this.postTime = postTime;
+    }
+
+    public String getIsPublished() {
+        return isPublished;
+    }
+
+    public void setIsPublished(boolean isPublished) {
+        if (isPublished)
+            this.isPublished = "1";
+        else
+            this.isPublished = "0";
+    }
+
+    public void setIsPublished(String isPublished) {
+        this.isPublished = isPublished;
     }
 
     @Override

@@ -5,9 +5,15 @@
 			<ul>
 				<li v-for="i in postsList" class="postItem">
 					<div>
-						<a href="">{{ i.postTitle }}</a>
-						<span>{{ i.postTime | dateFilter }}</span>
-						<p>{{ i.postContent }}</p>
+						<div>
+							<a href="">{{ i.postTitle }}</a>
+							<span>{{ i.category }}</span>
+							<span>{{ i.postTime | dateFilter }}</span>
+						</div>
+						<div>
+							<span class="post-author"><strong>{{ i.author.username }}</strong></span>
+						</div>
+						<p class="post-content">{{ i.postContent }}</p>
 					</div>
 				</li>
 			</ul>
@@ -25,7 +31,7 @@ export default {
 		dateFilter(tstamp) {
 			return new Date(parseInt(tstamp))
 				.toLocaleString()
-				.replace(/:\d{1,2}$/, " ");
+				.replace(/:\d{1,2}$/, " ").replace(/(^s*)|(s*$)/g, "");
 		},
 	},
 	beforeMount() {
@@ -35,8 +41,8 @@ export default {
 			if (res.data.length == 0) {
 				that.postsList.push({
 					postTitle: "暂时没有动态哦！",
-					postContent:"",
-					
+					postContent: "文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容",
+					author:"文章作者"
 				});
 			}
 		});
@@ -47,7 +53,7 @@ export default {
 .postItem {
 	display: block;
 	width: 60%;
-	min-height: 10rem;
+	min-height: 12.5rem;
 	max-height: 15rem;
 	margin: 2rem auto;
 	padding: 20px;
@@ -71,15 +77,19 @@ export default {
 	color: cornflowerblue;
 	text-decoration: none;
 }
-.postItem p {
+.postItem .post-content {
 	display: -webkit-box;
 	max-height: 10rem;
 	-webkit-box-orient: vertical;
 	-webkit-line-clamp: 5;
 	overflow: hidden;
 }
+.postItem .post-author{
+	margin: 0;
+	color: black;
+}
 .postItem span {
-	margin: 10px;
+	margin-left: 5pt;
 	color: rgb(143, 143, 143);
 }
 </style>

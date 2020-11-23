@@ -33,7 +33,7 @@
 							<template #button-content>
 								<em>你好呀,{{ userName }}</em>
 							</template>
-							<b-dropdown-item @click="logout"
+							<b-dropdown-item @click="Utils.methods.logout($ajax,true)"
 								>注销</b-dropdown-item
 							>
 						</b-nav-item-dropdown>
@@ -56,11 +56,12 @@
 				</b-collapse>
 			</b-navbar>
 		</div>
-		<router-view @onLoginSuccess="updateUserState" />
+		<router-view @onLoginSuccess="setLoginState" />
 	</div>
 </template>
 
 <script>
+import Utils from "./Utils";
 export default {
 	name: "App",
 	data() {
@@ -73,22 +74,17 @@ export default {
 		goto(route) {
 			this.$router.replace(route);
 		},
-		updateUserState() {
-			var userStr = window.sessionStorage.getItem("user");
-			console.log(userStr);
-			if (userStr != null) {
-				this.isLoggedin = true;
-				var userObj = JSON.parse(userStr);
-				this.userName = userObj.username;
-			}
-		},
-		logout() {
-			window.sessionStorage.removeItem("user");
-			location.replace("/");
+		setLoginState() {
+			var that = this;
+			Utils.methods.updateUserState(this.$ajax, false, (user) => {
+				that.isLoggedin = true;
+				that.userName = user.username;
+				console.log("asdasd")
+			});
 		},
 	},
 	beforeMount() {
-		this.updateUserState();
+		this.setLoginState();
 	},
 };
 </script>

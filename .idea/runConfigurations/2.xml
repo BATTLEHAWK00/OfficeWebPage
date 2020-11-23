@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="后端" type="com.poratu.idea.plugins.tomcat" factoryName="SMART_TOMCAT_FACTORY">
     <option name="adminPort" value="8005" />
-    <option name="contextPath" value="/OfficeWebPage" />
+    <option name="contextPath" value="/api" />
     <option name="docBase" value="D:\IDEA\Projects\OfficeWebPage\src\main\webapp" />
     <option name="envOptions">
       <map />

@@ -1,14 +1,15 @@
 package utils.jdbcutils.connection;
 
+import utils.LoggerUtil;
+import utils.PropertiesUtil;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class DBConnector {
     private static DBConnector instance;
-    final String URL = "jdbc:mysql://localhost:3306/web_demo?serverTimezone=UTC";
-    final String USERNAME = "root";
-    final String PASSWD = "439920010428YXL.";
     final int POOL_SIZE_INIT = 16;
     final int POOL_SIZE_MAX = 32;
     ConnectionPool connPool;
@@ -28,16 +29,20 @@ public class DBConnector {
 
     public void Init() {
         try {
-            System.out.println("数据库连接初始化...");
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            LoggerUtil.Log("数据库连接初始化...");
+            Properties prop = PropertiesUtil.GetPropFromResource("jdbc_connection.properties");
+            Class.forName(prop.getProperty("driverClassName"));
             connPool = new ConnectionPool(
-                    POOL_SIZE_INIT,
-                    POOL_SIZE_MAX,
-                    () -> DriverManager.getConnection(URL, USERNAME, PASSWD)
+                    Integer.parseInt(prop.getProperty("poolInitialSize")),
+                    Integer.parseInt(prop.getProperty("poolMaxSize")),
+                    () -> DriverManager.getConnection(prop.getProperty("url"),
+                            prop.getProperty("username"),
+                            prop.getProperty("password")
+                    )
             );
-            System.out.println("数据库连接初始化完毕");
-            System.out.printf(
-                    "连接池状态:%d/%d(%.2f%%)\n",
+            LoggerUtil.Log("数据库连接初始化完毕！");
+            LoggerUtil.Logf(
+                    "连接池状态:%d/%d(%.2f%%)",
                     connPool.size(), connPool.maxSize(),
                     (float) connPool.size() / connPool.maxSize() * 100
             );

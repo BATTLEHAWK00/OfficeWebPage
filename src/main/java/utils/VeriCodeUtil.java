@@ -10,19 +10,23 @@ import java.util.Random;
 
 public class VeriCodeUtil {
 
-    public static String drawRandomText(int width, int height, BufferedImage verifyImg) {
+    public static String getVerificationCode(int height, int num, OutputStream os) throws IOException {
+        int fontSize = 30;
+        int x = 10;  //旋转原点的 x 坐标
+        int width = (fontSize + 2 * x) * num;
+        BufferedImage verifyImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D graphics = (Graphics2D) verifyImg.getGraphics();
         graphics.setColor(Color.WHITE);//设置画笔颜色-验证码背景色
         graphics.fillRect(0, 0, width, height);//填充背景
-        graphics.setFont(new Font("微软雅黑", Font.BOLD, 40));
+        graphics.setFont(new Font("微软雅黑", Font.BOLD, fontSize));
         //数字和字母的组合
         String baseNumLetter = "123456789abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";
 
         StringBuffer sBuffer = new StringBuffer();
-        int x = 10;  //旋转原点的 x 坐标
+
         String ch = "";
         Random random = new Random();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < num; i++) {
             graphics.setColor(getRandomColor());
             //设置字体旋转角度
             int degree = random.nextInt() % 30;  //角度小于30度
@@ -45,12 +49,15 @@ public class VeriCodeUtil {
                     random.nextInt(width), random.nextInt(height));
         }
         //添加噪点
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 100; i++) {
             int x1 = random.nextInt(width);
             int y1 = random.nextInt(height);
             graphics.setColor(getRandomColor());
             graphics.fillRect(x1, y1, 2, 2);
         }
+        ImageIO.write(verifyImg, "png", os);
+        os.flush();
+        os.close();
         return sBuffer.toString();
     }
 
@@ -64,14 +71,4 @@ public class VeriCodeUtil {
         return color;
     }
 
-    public static String getVerificationCode(OutputStream os) throws IOException {
-        int width = 200;
-        int height = 69;
-        BufferedImage verifyImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        String randomText = VeriCodeUtil.drawRandomText(width, height, verifyImg);
-        ImageIO.write(verifyImg, "png", os);
-        os.flush();
-        os.close();
-        return randomText;
-    }
 }

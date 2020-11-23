@@ -1,9 +1,9 @@
 package dao;
 
 import bean.Order;
+import utils.StringUtil;
 import utils.jdbcutils.connection.DBConnector;
 import utils.jdbcutils.sql.SQLOperation;
-import utils.stringutils.StringUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,7 +18,7 @@ public class OrdersDao {
         try {
             DBConnector.get().getConnection(conn -> {
                 var query = new SQLOperation(conn);
-                String sql = String.format("SELECT * FROM orders WHERE UID ='%s'", uid);
+                String sql = String.format("SELECT * FROM orders WHERE UID ='%s' ORDER BY submit_time DESC", uid);
                 query.setSql(sql);
                 query.ExecuteQuery(res -> {
                     while (res.next()) {

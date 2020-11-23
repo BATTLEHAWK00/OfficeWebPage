@@ -33,7 +33,6 @@
 						id="passwd-group-check"
 						label="验证码:"
 						label-for="vericode-check"
-						:description="local.veriCode"
 					>
 						<b-form-input
 							id="vericode-check"
@@ -43,11 +42,20 @@
 							:state="vericodeCheck"
 						></b-form-input>
 					</b-form-group>
+					<b-form-group>
+						<b-img
+							alt="验证码"
+							:src="local.veriCodeSrc"
+							@click="refreshVeriCode"
+							class="vericode-img"
+						>
+						</b-img>
+					</b-form-group>
 					<div style="text-align: center">
 						<b-button
 							type="submit"
 							variant="primary"
-							style="width: 100pt"
+							style="width: 5rem"
 						>
 							登录
 						</b-button>
@@ -70,12 +78,37 @@ export default {
 				veriCode: "",
 			},
 			local: {
-				veriCode: "",
+				veriCodeSrc: "/api/vericode",
 			},
 		};
 	},
 	methods: {
-		onSubmit() {
+		onSubmit(evt) {
+			evt.preventDefault();
+			var flag = true;
+			var that = this;
+			this.$ajax
+				.get("/api/vericode", {
+					params: {
+						code: this.input.veriCode,
+					},
+				})
+				.then((res) => {
+					if (res.data.message == "Fail") {
+						alert("验证码填写错误！");
+						flag = false;
+						that.input.veriCode = "";
+						that.refreshVeriCode();
+						return;
+					}
+					that.onLogin();
+				})
+				.catch((err) => {
+					flag = false;
+					alert("登录失败！");
+				});
+		},
+		onLogin() {
 			this.$ajax
 				.post("/api/user/login", this.form, { credentials: true })
 				.then((res) => {
@@ -115,6 +148,10 @@ export default {
 					break;
 			}
 		},
+		refreshVeriCode() {
+			this.local.veriCodeSrc =
+				"/api/vericode?num=" + this.randomNum(100, 999);
+		},
 	},
 	computed: {
 		vericodeCheck() {
@@ -144,5 +181,9 @@ export default {
 }
 .login-card:hover {
 	box-shadow: 0px 0px 5px rgb(179, 179, 179);
+}
+.vericode-img {
+	cursor: pointer;
+	max-width: 70%;
 }
 </style>

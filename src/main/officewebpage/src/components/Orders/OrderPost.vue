@@ -71,7 +71,8 @@ export default {
 		};
 	},
 	methods: {
-		onSubmit() {
+		onSubmit(evt) {
+			evt.preventDefault();
 			var that = this;
 			this.$ajax
 				.post("/api/order", this.form)
@@ -79,6 +80,7 @@ export default {
 					if (res.data.message == "OK") {
 						alert("提交成功！");
 						that.onReset();
+						location.reload();
 					}
 				})
 				.catch((res) => {

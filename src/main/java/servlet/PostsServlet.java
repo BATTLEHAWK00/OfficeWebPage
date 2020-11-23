@@ -14,6 +14,7 @@ public class PostsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         //JsonArray json = new JsonArray();
-        resp.getWriter().write(new Gson().toJson(new PostsDao().getPosts()));
+        resp.getWriter().write(new Gson().toJson(new PostsDao().getPosts(true)));
+
     }
 }

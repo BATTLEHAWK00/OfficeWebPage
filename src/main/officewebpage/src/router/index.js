@@ -15,42 +15,61 @@ const router = new Router({
     {
       path: '/',
       name: 'Main',
-      component: Main
+      component: Main,
+      meta: {
+        requireAuth: false
+      }
     },
     {
       path: '/posts',
       name: '动态',
-      component: Posts
+      component: Posts,
+      meta: {
+        requireAuth: false
+      }
     },
     {
       path: '/aboutus',
       name: '关于我们',
-      component: Aboutus
+      component: Aboutus,
+      meta: {
+        requireAuth: false
+      }
     },
     {
       path: '/orderpost',
       name: '工单',
-      component: Order
+      component: Order,
+      meta: {
+        requireAuth: true
+      }
     },
     {
       path: '/login',
       name: '登录',
-      component: Login
+      component: Login,
+      meta: {
+        requireAuth: false
+      }
     },
     {
       path: '/register',
       name: '注册',
-      component: Reg
+      component: Reg,
+      meta: {
+        requireAuth: false
+      }
     }
   ]
 })
 
-router.afterEach((to, from) => {
+router.beforeEach((to, from, next) => {
   if (to.name == "Main") {
-    Utils.SetTitle()
-    return
+    Utils.methods.SetTitle()
+  } else {
+    Utils.methods.SetTitle(to.name)
   }
-  Utils.SetTitle(to.name)
+  next()
 })
 
 export default router
