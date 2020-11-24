@@ -2,6 +2,9 @@ package bean;
 
 import com.google.gson.Gson;
 
+/**
+ * ÏìÓ¦Êı¾İ
+ */
 public class Response {
     private Object data;
     private String message;

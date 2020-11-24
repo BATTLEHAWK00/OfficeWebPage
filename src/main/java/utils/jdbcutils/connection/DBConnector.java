@@ -10,8 +10,6 @@ import java.util.Properties;
 
 public class DBConnector {
     private static DBConnector instance;
-    final int POOL_SIZE_INIT = 16;
-    final int POOL_SIZE_MAX = 32;
     ConnectionPool connPool;
 
     public static DBConnector get() {
@@ -33,10 +31,15 @@ public class DBConnector {
             Properties prop = PropertiesUtil.GetPropFromResource("jdbc_connection.properties");
             Class.forName(prop.getProperty("driverClassName"));
             connPool = new ConnectionPool(
+                    //连接池初始大小
                     Integer.parseInt(prop.getProperty("poolInitialSize")),
+                    //连接池最大大小
                     Integer.parseInt(prop.getProperty("poolMaxSize")),
+                    //连接url
                     () -> DriverManager.getConnection(prop.getProperty("url"),
+                            //用户名
                             prop.getProperty("username"),
+                            //密码
                             prop.getProperty("password")
                     )
             );

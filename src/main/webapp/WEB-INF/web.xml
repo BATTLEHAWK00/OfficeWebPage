@@ -2,7 +2,5 @@
 <web-app>
     <servlet>
         <servlet-name>OfficeWebPage</servlet-name>
-        <servlet-class>servlet.MainServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
     </servlet>
 </web-app>

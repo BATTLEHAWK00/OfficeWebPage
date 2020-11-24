@@ -8,6 +8,9 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+/**
+ * ³õÊ¼»¯¼àÌı
+ */
 @WebListener
 public class InitListener implements ServletContextListener {
 

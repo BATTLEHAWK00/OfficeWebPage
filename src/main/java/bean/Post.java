@@ -2,6 +2,9 @@ package bean;
 
 import com.google.gson.Gson;
 
+/**
+ * 动态文章数据
+ */
 public class Post {
     String postID;
     String postTitle;

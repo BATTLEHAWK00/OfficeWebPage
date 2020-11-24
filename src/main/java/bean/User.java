@@ -13,7 +13,9 @@ enum sex {
     woman
 }
 
-
+/**
+ * 用户数据
+ */
 public class User {
     String uid;
     String username;

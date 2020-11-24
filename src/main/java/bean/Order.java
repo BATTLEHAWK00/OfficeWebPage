@@ -1,5 +1,8 @@
 package bean;
 
+/**
+ * 工单数据
+ */
 public class Order {
     String oid;
     String uid;
