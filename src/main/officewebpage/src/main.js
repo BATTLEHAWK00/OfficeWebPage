@@ -10,7 +10,6 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import GlobalVar from './Global'
 import Utils from './Utils'
 
-
 Vue.config.productionTip = false
 Vue.use(bootstrapvue)
 axios.defaults.withCredentials=true;

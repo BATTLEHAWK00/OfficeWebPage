@@ -64,6 +64,9 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) {
+    Utils.methods.updateUserState(router.app.$ajax,true)
+  }
   if (to.name == "Main") {
     Utils.methods.SetTitle()
   } else {

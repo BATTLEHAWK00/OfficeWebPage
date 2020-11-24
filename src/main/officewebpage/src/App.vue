@@ -79,7 +79,6 @@ export default {
 			Utils.methods.updateUserState(this.$ajax, false, (user) => {
 				that.isLoggedin = true;
 				that.userName = user.username;
-				console.log("asdasd")
 			});
 		},
 	},
