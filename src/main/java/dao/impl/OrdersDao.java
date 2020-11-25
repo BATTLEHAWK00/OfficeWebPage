@@ -1,4 +1,4 @@
-package dao;
+package dao.impl;
 
 import bean.Order;
 import utils.StringUtil;

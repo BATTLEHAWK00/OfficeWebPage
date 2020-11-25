@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
+/**
+ * SQL操作封装
+ */
 public class SQLOperation {
     private final Connection conn;
     private String sql;
@@ -25,6 +27,12 @@ public class SQLOperation {
         this.sql = sql;
     }
 
+    /**
+     * 执行SQL语句
+     *
+     * @param action 查询处理回调方法
+     * @throws SQLException
+     */
     private void execute(SQLAction action) throws SQLException {
         try {
             statement = conn.prepareStatement(sql);

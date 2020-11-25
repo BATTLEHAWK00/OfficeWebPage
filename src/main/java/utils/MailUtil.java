@@ -27,7 +27,9 @@ public class MailUtil {
         mm.setFrom(new InternetAddress(mailAccount));
         mm.setRecipient(Message.RecipientType.TO, new InternetAddress("154075059@qq.com"));
         mm.setSubject("²âÊÔÓÊ¼ş");
+
         mm.setContent("asdasdas", "text/html;charset=utf-8");
+
         transport.sendMessage(mm, mm.getAllRecipients());
         transport.close();
     }

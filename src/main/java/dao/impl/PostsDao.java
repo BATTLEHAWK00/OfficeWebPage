@@ -1,4 +1,4 @@
-package dao;
+package dao.impl;
 
 import bean.Post;
 import utils.jdbcutils.connection.DBConnector;

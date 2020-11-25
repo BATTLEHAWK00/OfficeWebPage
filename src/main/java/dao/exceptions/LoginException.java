@@ -1,5 +1,8 @@
 package dao.exceptions;
 
+/**
+ * µÇÂ¼Òì³£Àà
+ */
 public class LoginException extends Exception {
     String msg;
 

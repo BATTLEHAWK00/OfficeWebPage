@@ -9,7 +9,15 @@ import java.util.Random;
 
 
 public class VeriCodeUtil {
-
+    /**
+     * 生成验证码
+     *
+     * @param height 验证码高度，宽度自动计算
+     * @param num    验证码长度
+     * @param os     输出对象
+     * @return 返回验证码字符串
+     * @throws IOException
+     */
     public static String getVerificationCode(int height, int num, OutputStream os) throws IOException {
         int fontSize = 30;
         int x = 10;  //旋转原点的 x 坐标

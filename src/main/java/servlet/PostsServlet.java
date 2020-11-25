@@ -1,7 +1,7 @@
 package servlet;
 
 import com.google.gson.Gson;
-import dao.PostsDao;
+import dao.impl.PostsDao;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

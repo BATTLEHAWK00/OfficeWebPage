@@ -1,4 +1,4 @@
-package dao;
+package dao.impl;
 
 import bean.User;
 import dao.exceptions.LoginException;

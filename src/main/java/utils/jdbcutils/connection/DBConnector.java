@@ -9,12 +9,15 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class DBConnector {
-    private static DBConnector instance;
+    private static final DBConnector instance = new DBConnector();
     ConnectionPool connPool;
 
+    /**
+     * 单例模式
+     *
+     * @return 返回单例
+     */
     public static DBConnector get() {
-        if (instance == null)
-            instance = new DBConnector();
         return instance;
     }
 
@@ -25,11 +28,15 @@ public class DBConnector {
         connPool.push(conn);
     }
 
+    /**
+     * 数据库连接池初始化
+     */
     public void Init() {
         try {
             LoggerUtil.Log("数据库连接初始化...");
             Properties prop = PropertiesUtil.GetPropFromResource("jdbc_connection.properties");
             Class.forName(prop.getProperty("driverClassName"));
+
             connPool = new ConnectionPool(
                     //连接池初始大小
                     Integer.parseInt(prop.getProperty("poolInitialSize")),

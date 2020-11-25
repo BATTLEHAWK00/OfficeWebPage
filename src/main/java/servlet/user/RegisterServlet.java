@@ -4,8 +4,8 @@ import bean.Response;
 import bean.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import dao.UsersDao;
 import dao.exceptions.RegisterException;
+import dao.impl.UsersDao;
 import utils.LoggerUtil;
 
 import javax.servlet.annotation.WebServlet;

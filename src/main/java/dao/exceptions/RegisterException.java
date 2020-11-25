@@ -1,5 +1,8 @@
 package dao.exceptions;
 
+/**
+ * зЂВсвьГЃРр
+ */
 public class RegisterException extends Exception {
     String msg;
 

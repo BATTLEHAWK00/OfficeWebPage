@@ -13,7 +13,11 @@ import javax.servlet.annotation.WebListener;
  */
 @WebListener
 public class InitListener implements ServletContextListener {
-
+    /**
+     * 初始化入口
+     *
+     * @param servletContextEvent
+     */
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         LoggerUtil.Log("初始化...");
