@@ -1,7 +1,7 @@
 package servlet;
 
 import com.google.gson.Gson;
-import dao.impl.PostsDao;
+import service.impl.PostServiceImpl;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +14,7 @@ public class PostsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         //JsonArray json = new JsonArray();
-        resp.getWriter().write(new Gson().toJson(new PostsDao().getPosts(true)));
+        resp.getWriter().write(new Gson().toJson(new PostServiceImpl().getPublishedPosts()));
 
     }
 }

@@ -185,5 +185,13 @@ export default {
 .vericode-img {
 	cursor: pointer;
 	max-width: 70%;
+	/* border-style: solid; */
+	border-radius: 5px;
+	box-shadow: 1px 1px 3px rgb(223, 223, 223);
+	transition: all .5s;
+}
+.vericode-img:hover{
+	box-shadow: 1px 1px 5px rgb(197, 196, 196);
+	transform: scale(1.02);
 }
 </style>

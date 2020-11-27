@@ -41,7 +41,7 @@ export default {
 	width: 100%;
 	height: 100vh;
 	z-index: -1;
-	background-image: url("../assets/banner.png");
+	background-image: url("../assets/banner.webp");
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: 100%;

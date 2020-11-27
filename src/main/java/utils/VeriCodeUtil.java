@@ -28,7 +28,7 @@ public class VeriCodeUtil {
         graphics.fillRect(0, 0, width, height);//Ìî³ä±³¾°
         graphics.setFont(new Font("Î¢ÈíÑÅºÚ", Font.BOLD, fontSize));
         //Êý×ÖºÍ×ÖÄ¸µÄ×éºÏ
-        String baseNumLetter = "123456789abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";
+        String baseNumLetter = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";
 
         StringBuffer sBuffer = new StringBuffer();
 

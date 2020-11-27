@@ -5,7 +5,7 @@ import bean.Response;
 import bean.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import dao.impl.OrdersDao;
+import service.impl.OrdersServiceImpl;
 import utils.LoggerUtil;
 
 import javax.servlet.ServletException;
@@ -24,7 +24,7 @@ public class OrderServlet extends HttpServlet {
         if (req.getParameter("uid") != null)
             uid = req.getParameter("uid");
         if (uid != null) {
-            res.SetData(new OrdersDao().getOrdersOfUid(uid));
+            res.SetData(new OrdersServiceImpl().doGetOrdersByUID(uid));
             res.SetMessage("OK");
         } else {
             res.SetMessage("找不到用户或会话失效！");
@@ -46,7 +46,7 @@ public class OrderServlet extends HttpServlet {
             order.setUid(user.getUid());
             order.setType(jsonObject.get("orderType").getAsString());
             order.setDesc(jsonObject.get("orderDesc").getAsString());
-            new OrdersDao().postOrder(order, user.getUid());
+            new OrdersServiceImpl().doPostOrder(order);
             res.SetMessage("OK");
             LoggerUtil.Logf("工单提交：OID(%s),UID(%s)", order.getOid(), order.getUid());
         } catch (Exception e) {

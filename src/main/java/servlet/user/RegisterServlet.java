@@ -4,8 +4,8 @@ import bean.Response;
 import bean.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import dao.exceptions.RegisterException;
-import dao.impl.UsersDao;
+import service.exceptions.RegisterException;
+import service.impl.UsersServiceImpl;
 import utils.LoggerUtil;
 
 import javax.servlet.annotation.WebServlet;
@@ -25,7 +25,7 @@ public class RegisterServlet extends HttpServlet {
             user.setUsername(jsonObject.get("username").getAsString().trim());
             user.setTel(jsonObject.get("tel").getAsString().trim());
             user.setMajorClass(jsonObject.get("majorclass").getAsString().trim());
-            new UsersDao().RegisterUser(user, jsonObject.get("passwd").getAsString());
+            new UsersServiceImpl().doUserRegister(user, jsonObject.get("passwd").getAsString());
             res.SetMessage("OK");
             LoggerUtil.Logf("ÓÃ»§×¢²á£º%s(uid:%s)", user.getUsername(), user.getUid());
         } catch (RegisterException e) {

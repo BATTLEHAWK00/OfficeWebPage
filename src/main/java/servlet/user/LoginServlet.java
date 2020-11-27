@@ -4,8 +4,8 @@ import bean.Response;
 import bean.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import dao.exceptions.LoginException;
-import dao.impl.UsersDao;
+import service.exceptions.LoginException;
+import service.impl.UsersServiceImpl;
 import utils.LoggerUtil;
 
 import javax.servlet.annotation.WebServlet;
@@ -27,14 +27,13 @@ public class LoginServlet extends HttpServlet {
         User user = null;
         res = new Response();
         try {
-            user = new UsersDao().getUser(username, passwd);
+            user = new UsersServiceImpl().doUserLogin(username, passwd);
             HttpSession session = req.getSession();
             if (session.getAttribute("loggedUser") != null) {
                 session.removeAttribute("loggedUser");
             }
             session.setAttribute("loggedUser", user);
             session.setMaxInactiveInterval(300);
-            new UsersDao().setLoginTime(user.getUid());
             res.SetMessage("OK");
             res.SetData(user);
             LoggerUtil.Log("ÓÃ»§µÇÂ¼£º" + user.getUsername());

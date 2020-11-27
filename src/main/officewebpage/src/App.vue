@@ -29,7 +29,7 @@
 							v-if="isLoggedin"
 							key="users"
 						>
-							<!-- Using 'button-content' slot -->
+							<!-- Using  'button-content' slot -->
 							<template #button-content>
 								<em>你好呀,{{ userName }}</em>
 							</template>
