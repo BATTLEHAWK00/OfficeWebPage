@@ -1,4 +1,4 @@
-package servlet;
+package web.servlets;
 
 import com.google.gson.Gson;
 import service.impl.PostServiceImpl;

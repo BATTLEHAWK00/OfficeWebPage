@@ -1,4 +1,4 @@
-package servlet;
+package web.servlets;
 
 import bean.Order;
 import bean.Response;
@@ -8,7 +8,6 @@ import com.google.gson.JsonParser;
 import service.impl.OrdersServiceImpl;
 import utils.LoggerUtil;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +17,7 @@ import java.io.IOException;
 @WebServlet("/order")
 public class OrderServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Response res = new Response();
         String uid = null;
         if (req.getParameter("uid") != null)

@@ -1,4 +1,4 @@
-package servlet;
+package web.servlets;
 
 import utils.LoggerUtil;
 import utils.MailUtil;
@@ -15,8 +15,6 @@ import javax.servlet.annotation.WebListener;
 public class InitListener implements ServletContextListener {
     /**
      * 初始化入口
-     *
-     * @param servletContextEvent
      */
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {

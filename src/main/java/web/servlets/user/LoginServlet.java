@@ -1,4 +1,4 @@
-package servlet.user;
+package web.servlets.user;
 
 import bean.Response;
 import bean.User;
@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
         String passwd = jsonObject.get("passwd").getAsString();
         JsonObject data = new JsonObject();
         Response res;
-        User user = null;
+        User user;
         res = new Response();
         try {
             user = new UsersServiceImpl().doUserLogin(username, passwd);

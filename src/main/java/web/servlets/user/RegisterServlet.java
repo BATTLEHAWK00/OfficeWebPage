@@ -1,4 +1,4 @@
-package servlet.user;
+package web.servlets.user;
 
 import bean.Response;
 import bean.User;

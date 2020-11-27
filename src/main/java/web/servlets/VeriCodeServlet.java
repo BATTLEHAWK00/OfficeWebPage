@@ -1,10 +1,9 @@
-package servlet;
+package web.servlets;
 
 import bean.Response;
 import utils.LoggerUtil;
 import utils.VeriCodeUtil;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +14,7 @@ import java.io.IOException;
 @WebServlet("/vericode")
 public class VeriCodeServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession();
         if (req.getParameter("code") != null) {
             Response res = new Response();
