@@ -31,8 +31,11 @@ public class ConnectionPool {
 
 	private void initConn() {
 		try {
-			while (connPool.size() < INIT_SIZE)
+			while (connPool.size() < INIT_SIZE) {
 				connPool.add(getConnection.getConn());
+				//休眠线程，避免初始化时消耗过多资源
+				Thread.sleep(50);
+			}
 		} catch (Exception e) {
 			System.err.println("创建数据库连接时发生错误：");
 			System.err.println(e.getMessage());
