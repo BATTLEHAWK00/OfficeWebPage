@@ -4,6 +4,7 @@ import bean.Response;
 import bean.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import service.UsersService;
 import service.exceptions.LoginException;
 import service.impl.UsersServiceImpl;
 import utils.LoggerUtil;
@@ -17,6 +18,7 @@ import java.io.IOException;
 
 @WebServlet("/user/login")
 public class LoginServlet extends HttpServlet {
+    UsersService usersService = new UsersServiceImpl();
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         JsonObject jsonObject = JsonParser.parseReader(req.getReader()).getAsJsonObject();
@@ -27,7 +29,7 @@ public class LoginServlet extends HttpServlet {
         User user;
         res = new Response();
         try {
-            user = new UsersServiceImpl().doUserLogin(username, passwd);
+            user = usersService.doUserLogin(username, passwd);
             HttpSession session = req.getSession();
             if (session.getAttribute("loggedUser") != null) {
                 session.removeAttribute("loggedUser");

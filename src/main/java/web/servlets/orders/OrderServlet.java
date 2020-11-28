@@ -1,10 +1,11 @@
-package web.servlets;
+package web.servlets.orders;
 
 import bean.Order;
 import bean.Response;
 import bean.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import service.OrdersService;
 import service.impl.OrdersServiceImpl;
 import utils.LoggerUtil;
 
@@ -16,6 +17,7 @@ import java.io.IOException;
 
 @WebServlet("/order")
 public class OrderServlet extends HttpServlet {
+    OrdersService ordersService = new OrdersServiceImpl();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Response res = new Response();
@@ -23,7 +25,7 @@ public class OrderServlet extends HttpServlet {
         if (req.getParameter("uid") != null)
             uid = req.getParameter("uid");
         if (uid != null) {
-            res.SetData(new OrdersServiceImpl().doGetOrdersByUID(uid));
+            res.SetData(ordersService.doGetOrdersByUID(uid));
             res.SetMessage("OK");
         } else {
             res.SetMessage("找不到用户或会话失效！");
@@ -45,7 +47,7 @@ public class OrderServlet extends HttpServlet {
             order.setUid(user.getUid());
             order.setType(jsonObject.get("orderType").getAsString());
             order.setDesc(jsonObject.get("orderDesc").getAsString());
-            new OrdersServiceImpl().doPostOrder(order);
+            ordersService.doPostOrder(order);
             res.SetMessage("OK");
             LoggerUtil.Logf("工单提交：OID(%s),UID(%s)", order.getOid(), order.getUid());
         } catch (Exception e) {

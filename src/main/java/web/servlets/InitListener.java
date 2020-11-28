@@ -13,19 +13,20 @@ import javax.servlet.annotation.WebListener;
  */
 @WebListener
 public class InitListener implements ServletContextListener {
-    /**
-     * 初始化入口
-     */
-    @Override
-    public void contextInitialized(ServletContextEvent servletContextEvent) {
-        LoggerUtil.Log("初始化...");
-        DBConnector.get().Init();
-        MailUtil.getInstance().Init();
-        LoggerUtil.Log("初始化完毕！");
-    }
+	/**
+	 * 初始化入口
+	 */
+	@Override
+	public void contextInitialized(ServletContextEvent servletContextEvent) {
+		LoggerUtil.Log("初始化...");
+		DBConnector.get().Init();
+		MailUtil.getInstance().Init();
+		LoggerUtil.Log("初始化完毕！");
 
-    @Override
-    public void contextDestroyed(ServletContextEvent servletContextEvent) {
+	}
 
-    }
+	@Override
+	public void contextDestroyed(ServletContextEvent servletContextEvent) {
+
+	}
 }
