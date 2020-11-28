@@ -1,12 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Utils from '../Utils'
-import Main from '@/components/Main'
-import Posts from '@/components/Posts'
-import Aboutus from '@/components/Aboutus'
-import Order from '@/components/Order'
-import Login from '@/components/Users/Login'
-import Reg from '@/components/Users/Register'
 
 Vue.use(Router)
 
@@ -15,7 +9,7 @@ const router = new Router({
     {
       path: '/',
       name: 'Main',
-      component: Main,
+      component: () => import('@/components/Main'),
       meta: {
         requireAuth: false
       }
@@ -23,7 +17,7 @@ const router = new Router({
     {
       path: '/posts',
       name: '动态',
-      component: Posts,
+      component: () => import('@/components/Posts'),
       meta: {
         requireAuth: false
       }
@@ -31,7 +25,7 @@ const router = new Router({
     {
       path: '/aboutus',
       name: '关于我们',
-      component: Aboutus,
+      component: () => import('@/components/Aboutus'),
       meta: {
         requireAuth: false
       }
@@ -39,7 +33,7 @@ const router = new Router({
     {
       path: '/orderpost',
       name: '工单',
-      component: Order,
+      component: () => import('@/components/Order'),
       meta: {
         requireAuth: true
       }
@@ -47,7 +41,7 @@ const router = new Router({
     {
       path: '/login',
       name: '登录',
-      component: Login,
+      component: () => import('@/components/Users/Login'),
       meta: {
         requireAuth: false
       }
@@ -55,9 +49,17 @@ const router = new Router({
     {
       path: '/register',
       name: '注册',
-      component: Reg,
+      component: () => import('@/components/Users/Register'),
       meta: {
         requireAuth: false
+      }
+    },
+    {
+      path: '/manage',
+      name: '管理',
+      component: () => import('@/components/Manage'),
+      meta: {
+        requireAuth: true
       }
     }
   ]
@@ -65,7 +67,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) {
-    Utils.methods.updateUserState(router.app.$ajax,true)
+    Utils.methods.updateUserState(router.app.$ajax, true)
   }
   if (to.name == "Main") {
     Utils.methods.SetTitle()

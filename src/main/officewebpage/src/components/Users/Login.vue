@@ -43,13 +43,7 @@
 						></b-form-input>
 					</b-form-group>
 					<b-form-group>
-						<b-img
-							alt="验证码"
-							:src="local.veriCodeSrc"
-							@click="refreshVeriCode"
-							class="vericode-img"
-						>
-						</b-img>
+						<vericode ref="vericode"></vericode>
 					</b-form-group>
 					<div style="text-align: center">
 						<b-button
@@ -67,7 +61,12 @@
 </template>
 
 <script>
+import vericode from "../Coms/Vericode";
+import Vericode from "../Coms/Vericode.vue";
 export default {
+	components: {
+		vericode,
+	},
 	data() {
 		return {
 			form: {
@@ -76,9 +75,6 @@ export default {
 			},
 			input: {
 				veriCode: "",
-			},
-			local: {
-				veriCodeSrc: "/api/vericode",
 			},
 		};
 	},
@@ -99,6 +95,7 @@ export default {
 						flag = false;
 						that.input.veriCode = "";
 						that.refreshVeriCode();
+						that.input.vericode = "";
 						return;
 					}
 					that.onLogin();
@@ -109,6 +106,7 @@ export default {
 				});
 		},
 		onLogin() {
+			var that = this;
 			this.$ajax
 				.post("/api/user/login", this.form, { credentials: true })
 				.then((res) => {
@@ -117,7 +115,7 @@ export default {
 							"user",
 							JSON.stringify(res.data.data)
 						);
-						this.$emit("onLoginSuccess");
+						that.$emit("onLoginSuccess");
 						alert("登陆成功！");
 						location.replace("/");
 					} else alert(res.data.message);
@@ -130,38 +128,26 @@ export default {
 					} else {
 						alert("登陆失败！");
 					}
+					that.onReset();
 				});
 		},
-		randomNum(minNum, maxNum) {
-			switch (arguments.length) {
-				case 1:
-					return parseInt(Math.random() * minNum + 1, 10);
-					break;
-				case 2:
-					return parseInt(
-						Math.random() * (maxNum - minNum + 1) + minNum,
-						10
-					);
-					break;
-				default:
-					return 0;
-					break;
-			}
-		},
 		refreshVeriCode() {
-			this.local.veriCodeSrc =
-				"/api/vericode?num=" + this.randomNum(100, 999);
+			this.$refs.vericode.refreshVeriCode();
+		},
+		onReset() {
+			this.form.username = "";
+			this.form.passwd = "";
+			this.input.veriCode = "";
+			this.refreshVeriCode();
 		},
 	},
 	computed: {
 		vericodeCheck() {
 			if (this.input.veriCode == "") return null;
-			return this.local.veriCode == this.input.veriCode;
+			return this.input.veriCode.length == 5;
 		},
 	},
-	beforeMount() {
-		this.local.veriCode = this.randomNum(100000, 999999).toString();
-	},
+	beforeMount() {},
 };
 </script>
 <style scoped>
@@ -188,9 +174,9 @@ export default {
 	/* border-style: solid; */
 	border-radius: 5px;
 	box-shadow: 1px 1px 3px rgb(223, 223, 223);
-	transition: all .5s;
+	transition: all 0.5s;
 }
-.vericode-img:hover{
+.vericode-img:hover {
 	box-shadow: 1px 1px 5px rgb(197, 196, 196);
 	transform: scale(1.02);
 }

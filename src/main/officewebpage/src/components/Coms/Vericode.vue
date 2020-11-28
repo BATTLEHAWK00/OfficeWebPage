@@ -2,7 +2,7 @@
 	<div>
 		<b-img
 			alt="验证码"
-			:src="local.veriCodeSrc"
+			:src="src"
 			@click="refreshVeriCode"
 			class="vericode-img"
 		>
@@ -20,8 +20,8 @@ export default {
 	},
 	methods: {
 		refreshVeriCode() {
-			this.local.veriCodeSrc =
-				api + "?num=" + Utils.methods.randomNum(100, 999);
+			this.src =
+				this.api + "?num=" + Utils.methods.randomNum(100, 999);
 		},
 	},
 	props: ["verify"],

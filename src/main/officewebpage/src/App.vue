@@ -33,9 +33,14 @@
 							<template #button-content>
 								<em>你好呀,{{ userName }}</em>
 							</template>
-							<b-dropdown-item @click="Utils.methods.logout($ajax,true)"
-								>注销</b-dropdown-item
+							<b-dropdown-item @click="gotoManage">
+								管理后台
+							</b-dropdown-item>
+							<b-dropdown-item
+								@click="Utils.methods.logout($ajax, true)"
 							>
+								注销
+							</b-dropdown-item>
 						</b-nav-item-dropdown>
 						<b-navbar-nav right v-else key="users">
 							<b-button
@@ -72,7 +77,7 @@ export default {
 	},
 	methods: {
 		goto(route) {
-			this.$router.replace(route);
+			this.$router.push(route).catch((err) => {});
 		},
 		setLoginState() {
 			var that = this;
@@ -80,6 +85,9 @@ export default {
 				that.isLoggedin = true;
 				that.userName = user.username;
 			});
+		},
+		gotoManage() {
+			if (this.isLoggedin) this.goto("/manage");
 		},
 	},
 	beforeMount() {

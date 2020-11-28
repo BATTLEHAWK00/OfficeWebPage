@@ -83,13 +83,7 @@
 						></b-form-input>
 					</b-form-group>
 					<b-form-group>
-						<b-img
-							alt="验证码"
-							:src="local.veriCodeSrc"
-							@click="refreshVeriCode"
-							class="vericode-img"
-						>
-						</b-img>
+						<vericode ref="vericode"></vericode>
 					</b-form-group>
 					<div style="text-align: center">
 						<b-button
@@ -106,7 +100,11 @@
 	</div>
 </template>
 <script>
+import vericode from "../Coms/Vericode";
 export default {
+	components: {
+		vericode,
+	},
 	data() {
 		return {
 			form: {
@@ -119,16 +117,35 @@ export default {
 				passwdCheck: "",
 				veriCode: "",
 			},
-			local: {
-				veriCodeSrc: "/api/vericode",
-			},
 		};
 	},
 	methods: {
 		onSubmit(evt) {
+			var that = this;
 			evt.preventDefault();
-			console.log("asd");
 			if (!this.checkForm()) return;
+			this.$ajax
+				.get("/api/vericode", {
+					params: {
+						code: this.input.veriCode,
+					},
+				})
+				.then((res) => {
+					if (res.data.message == "Fail") {
+						alert("验证码填写错误！");
+						flag = false;
+						that.input.veriCode = "";
+						that.refreshVeriCode();
+						return;
+					}
+					that.onReg();
+				})
+				.catch((err) => {
+					flag = false;
+					alert("登录失败！");
+				});
+		},
+		onReg() {
 			this.$ajax
 				.post("/api/user/register", this.form)
 				.then((res) => {
@@ -160,25 +177,8 @@ export default {
 			}
 			return true;
 		},
-		randomNum(minNum, maxNum) {
-			switch (arguments.length) {
-				case 1:
-					return parseInt(Math.random() * minNum + 1, 10);
-					break;
-				case 2:
-					return parseInt(
-						Math.random() * (maxNum - minNum + 1) + minNum,
-						10
-					);
-					break;
-				default:
-					return 0;
-					break;
-			}
-		},
 		refreshVeriCode() {
-			this.local.veriCodeSrc =
-				"/api/vericode?num=" + this.randomNum(100, 999);
+			this.$refs.vericode.refreshVeriCode();
 		},
 	},
 	computed: {

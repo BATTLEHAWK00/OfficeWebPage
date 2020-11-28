@@ -36,14 +36,21 @@ public class DBConnector {
             LoggerUtil.Log("数据库连接初始化...");
             Properties prop = PropertiesUtil.GetPropFromResource("jdbc_connection.properties");
             Class.forName(prop.getProperty("driverClassName"));
-
+            String jdbcUrl = String.format(
+                    "jdbc:mysql://%s:%s/%s?serverTimezone=Asia/Shanghai",
+                    prop.getProperty("dbHost"),
+                    prop.getProperty("dbPort"),
+                    prop.getProperty("dbName")
+            );
             connPool = new ConnectionPool(
                     //连接池初始大小
                     Integer.parseInt(prop.getProperty("poolInitialSize")),
                     //连接池最大大小
                     Integer.parseInt(prop.getProperty("poolMaxSize")),
                     //连接url
-                    () -> DriverManager.getConnection(prop.getProperty("url"),
+                    () -> DriverManager.getConnection(
+                            //URL
+                            jdbcUrl,
                             //用户名
                             prop.getProperty("username"),
                             //密码
