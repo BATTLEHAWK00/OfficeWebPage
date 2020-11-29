@@ -125,6 +125,26 @@ public class UsersDaoImpl implements UsersDao {
 	}
 
 	@Override
+	public String getUserDispName(String uid) throws SQLException {
+		AtomicReference<String> name = new AtomicReference<>();
+		DBConnector.get().getConnection(conn -> {
+			var query = new SQLOperation(conn);
+			String sql = String.format("SELECT disp_name,name FROM users WHERE uid='%s'", uid);
+			query.setSql(sql);
+			query.ExecuteQuery(res -> {
+				if (res.next()) {
+					String disp_name = res.getString("disp_name");
+					if (disp_name.isBlank())
+						name.set(res.getString("name"));
+					else
+						name.set(disp_name);
+				}
+			});
+		});
+		return name.get();
+	}
+
+	@Override
 	public User getByResultSet(ResultSet res) throws SQLException {
 		User user = new User();
 		user.setUid(res.getString("UID"));

@@ -1,6 +1,5 @@
 package bean;
 
-import bean.user.User;
 import com.google.gson.Gson;
 
 /**
@@ -10,14 +9,14 @@ public class Post {
     String postID;
     String postTitle;
     String postContent;
-    User author;
+    String author;
     String category;
     String photo_src;
     int views;
     long postTime;
     String isPublished;
 
-    public void setAuthor(User author) {
+    public void setAuthor(String author) {
         this.author = author;
     }
 

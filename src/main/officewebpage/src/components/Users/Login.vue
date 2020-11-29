@@ -61,11 +61,9 @@
 </template>
 
 <script>
-import vericode from "../Coms/Vericode";
-import Vericode from "../Coms/Vericode.vue";
 export default {
 	components: {
-		vericode,
+		vericode: () => import("../Coms/Vericode"),
 	},
 	data() {
 		return {

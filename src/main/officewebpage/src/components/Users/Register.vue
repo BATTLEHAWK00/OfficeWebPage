@@ -88,10 +88,9 @@
 	</div>
 </template>
 <script>
-import vericode from "../Coms/Vericode";
 export default {
 	components: {
-		vericode,
+		vericode: () => import("../Coms/Vericode"),
 	},
 	data() {
 		return {

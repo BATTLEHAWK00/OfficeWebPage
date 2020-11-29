@@ -59,4 +59,9 @@ public class UsersServiceImpl implements UsersService {
     public User getUserByUID(String uid) throws SQLException {
         return usersDao.getUserByUID(uid);
     }
+
+    @Override
+    public String getUserDispName(String uid) throws SQLException {
+        return usersDao.getUserDispName(uid);
+    }
 }

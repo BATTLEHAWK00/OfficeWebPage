@@ -34,4 +34,6 @@ public interface UsersService {
 	 * @throws SQLException
 	 */
 	User getUserByUID(String uid) throws SQLException;
+
+	String getUserDispName(String uid) throws SQLException;
 }

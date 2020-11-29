@@ -4,20 +4,21 @@
 			<h2 class="text-center">工单预约</h2>
 			<b-tabs lazy>
 				<b-tab title="工单查询">
-					<orderquery style="margin-top:20px;"></orderquery>
+					<orderquery style="margin-top: 20px"></orderquery>
 				</b-tab>
 				<b-tab title="工单提交">
-					<orderpost style="margin-top:20px;"></orderpost>
+					<orderpost style="margin-top: 20px"></orderpost>
 				</b-tab>
 			</b-tabs>
 		</b-card>
 	</div>
 </template>
 <script>
-import orderpost from "./Orders/OrderPost";
-import orderquery from "./Orders/OrderQuery";
 export default {
-	components: { orderpost, orderquery },
+	components: {
+		orderpost: () => import("./Orders/OrderPost"),
+		orderquery: () => import("./Orders/OrderQuery"),
+	},
 	data() {
 		return {
 			show: true,

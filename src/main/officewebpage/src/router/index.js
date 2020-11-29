@@ -1,6 +1,5 @@
-import Vue from 'vue'
-import Router from 'vue-router'
 import Utils from '../Utils'
+import Router from 'vue-router'
 
 Vue.use(Router)
 

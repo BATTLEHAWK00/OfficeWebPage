@@ -16,9 +16,11 @@ public interface UsersDao extends BaseDao {
 
     User getUserByUID(String uid) throws SQLException;
 
-	String getUserByPasswd(String username, String passwd) throws SQLException, LoginException;
+    String getUserByPasswd(String username, String passwd) throws SQLException, LoginException;
 
     void setLoginTime(String uid) throws SQLException;
 
     User getUserByName(String name) throws SQLException;
+
+    String getUserDispName(String uid) throws SQLException;
 }

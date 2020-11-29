@@ -62,7 +62,7 @@ public class PostsDaoImpl implements PostsDao {
 	public Post getByResultSet(ResultSet res) throws SQLException {
 		Post post = new Post();
 		post.setPostID(res.getString("PID"));
-		post.setAuthor(new UsersDaoImpl().getUserByUID(res.getString("author")));
+		post.setAuthor(new UsersDaoImpl().getUserDispName(res.getString("author")));
 		post.setPhoto_src(res.getString("photo_src"));
 		post.setPostTitle(res.getString("title"));
 		post.setPostContent(res.getString("content"));
