@@ -9,18 +9,28 @@
 				class="nav-bar"
 				sticky
 			>
-				<b-navbar-brand href="/">{{
-					GlobalVar.OfficeName
-				}}</b-navbar-brand>
+				<b-navbar-brand href="/">
+					{{ GlobalVar.OfficeName }}
+				</b-navbar-brand>
 				<b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 				<b-collapse id="nav-collapse" is-nav>
 					<b-navbar-nav>
 						<b-nav-item to="/">首页</b-nav-item>
 						<b-nav-item to="/posts">动态</b-nav-item>
-						<b-nav-item to="/orderpost" v-if="isLoggedin"
-							>工单预约</b-nav-item
-						>
+						<b-nav-item to="/orderpost" v-if="isLoggedin">
+							工单预约
+						</b-nav-item>
 						<b-nav-item to="/aboutus">关于我们</b-nav-item>
+						<b-nav-item>
+							<div v-if="loading">
+								<b-spinner
+									label="Spinning"
+									small
+									variant="primary"
+								></b-spinner>
+								<span>加载中...</span>
+							</div>
+						</b-nav-item>
 					</b-navbar-nav>
 					<!-- Right aligned nav items -->
 					<b-navbar-nav class="ml-auto">
@@ -61,7 +71,9 @@
 				</b-collapse>
 			</b-navbar>
 		</div>
-		<router-view @onLoginSuccess="setLoginState" />
+		<div>
+			<router-view @onLoginSuccess="setLoginState" />
+		</div>
 	</div>
 </template>
 
@@ -73,6 +85,7 @@ export default {
 		return {
 			userName: "请登录",
 			isLoggedin: false,
+			loading: true,
 		};
 	},
 	methods: {
@@ -88,6 +101,19 @@ export default {
 		},
 		gotoManage() {
 			if (this.isLoggedin) this.goto("/manage");
+		},
+		loadingAnim() {
+			var that = this;
+			that.loading = true;
+			setTimeout(() => {
+				that.loading = false;
+			}, 300);
+		},
+	},
+	watch: {
+		$route(to, from) {
+			console.log(to);
+			this.loadingAnim();
 		},
 	},
 	beforeMount() {

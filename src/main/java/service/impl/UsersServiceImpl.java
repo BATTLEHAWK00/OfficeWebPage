@@ -1,6 +1,7 @@
 package service.impl;
 
-import bean.User;
+import bean.user.User;
+import bean.user.UserIdentity;
 import dao.UsersDao;
 import dao.impl.UsersDaoImpl;
 import service.UsersService;
@@ -20,14 +21,14 @@ public class UsersServiceImpl implements UsersService {
     UsersDao usersDao = new UsersDaoImpl();
 
     @Override
-    public User doUserLogin(String username, String passwd) throws LoginException {
+    public String doUserLogin(String username, String passwd) throws LoginException {
         String passwd_md5 = SecurityUtil.getSaltMD5(passwd, username);
         try {
-            User user = usersDao.getUserByPasswd(username, passwd_md5);
-            if (user == null)
+            String uid = usersDao.getUserByPasswd(username, passwd_md5);
+            if (uid == null)
                 throw new LoginException("用户名或密码不正确！");
-            usersDao.setLoginTime(user.getUid());
-            return user;
+            usersDao.setLoginTime(uid);
+            return uid;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new LoginException("内部错误！");
@@ -45,11 +46,17 @@ public class UsersServiceImpl implements UsersService {
             do {
                 uid = StringUtil.getUUID(8);
             } while (usersDao.getUserByUID(uid) != null);
+            user.setIdentity(UserIdentity.Student);
             user.setUid(uid);
             usersDao.RegisterUser(user, passwd_md5);
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RegisterException("内部错误！");
         }
+    }
+
+    @Override
+    public User getUserByUID(String uid) throws SQLException {
+        return usersDao.getUserByUID(uid);
     }
 }

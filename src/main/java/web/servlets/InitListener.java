@@ -1,5 +1,6 @@
 package web.servlets;
 
+import bean.user.UserSex;
 import utils.LoggerUtil;
 import utils.MailUtil;
 import utils.jdbcutils.connection.DBConnector;
@@ -18,6 +19,7 @@ public class InitListener implements ServletContextListener {
 	 */
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
+		System.out.println(UserSex.ÄÐ.name());
 		LoggerUtil.Log("³õÊ¼»¯...");
 		DBConnector.get().Init();
 		MailUtil.getInstance().Init();

@@ -1,4 +1,4 @@
-package bean;
+package bean.order;
 
 /**
  * 工单数据
@@ -6,7 +6,7 @@ package bean;
 public class Order {
     String oid;
     String uid;
-    String type;
+    int type;
     String desc;
     String imgSrcs;
     long submitTime;
@@ -78,11 +78,11 @@ public class Order {
         this.state = state;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 }

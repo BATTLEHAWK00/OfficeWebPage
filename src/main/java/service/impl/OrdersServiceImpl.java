@@ -1,6 +1,6 @@
 package service.impl;
 
-import bean.Order;
+import bean.order.Order;
 import dao.OrdersDao;
 import dao.impl.OrdersDaoImpl;
 import service.OrdersService;
@@ -17,19 +17,15 @@ import java.util.List;
 public class OrdersServiceImpl implements OrdersService {
     OrdersDao ordersDao = new OrdersDaoImpl();
 
-    @Override
-    public void doPostOrder(Order order) {
-        try {
-            String oid;
-            do {
-                oid = StringUtil.getUUID(8);
-            } while (ordersDao.getOrderByOID(oid) != null);
-            order.setOid(oid);
-            ordersDao.postOrder(order);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
+	@Override
+	public void doPostOrder(Order order) throws SQLException {
+		String oid;
+		do {
+			oid = StringUtil.getUUID(8);
+		} while (ordersDao.getOrderByOID(oid) != null);
+		order.setOid(oid);
+		ordersDao.postOrder(order);
+	}
 
     @Override
     public List<Order> doGetOrdersByUID(String uid) {

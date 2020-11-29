@@ -1,5 +1,6 @@
 package bean;
 
+import bean.user.User;
 import com.google.gson.Gson;
 
 /**

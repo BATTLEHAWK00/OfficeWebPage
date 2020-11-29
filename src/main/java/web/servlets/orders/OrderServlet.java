@@ -1,10 +1,11 @@
 package web.servlets.orders;
 
-import bean.Order;
 import bean.Response;
-import bean.User;
+import bean.order.Order;
+import bean.user.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import dao.impl.OrdersDaoImpl;
 import service.OrdersService;
 import service.impl.OrdersServiceImpl;
 import utils.LoggerUtil;
@@ -45,13 +46,14 @@ public class OrderServlet extends HttpServlet {
                 return;
             }
             order.setUid(user.getUid());
-            order.setType(jsonObject.get("orderType").getAsString());
+            order.setType(new OrdersDaoImpl().getOrderType(jsonObject.get("orderType").getAsString()));
             order.setDesc(jsonObject.get("orderDesc").getAsString());
             ordersService.doPostOrder(order);
             res.SetMessage("OK");
             LoggerUtil.Logf("工单提交：OID(%s),UID(%s)", order.getOid(), order.getUid());
         } catch (Exception e) {
             e.printStackTrace();
+            resp.setStatus(500);
         }
         resp.getWriter().write(res.toJson());
     }

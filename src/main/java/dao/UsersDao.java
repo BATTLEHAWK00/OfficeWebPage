@@ -1,6 +1,6 @@
 package dao;
 
-import bean.User;
+import bean.user.User;
 import service.exceptions.LoginException;
 import service.exceptions.RegisterException;
 
@@ -16,7 +16,7 @@ public interface UsersDao extends BaseDao {
 
     User getUserByUID(String uid) throws SQLException;
 
-    User getUserByPasswd(String username, String passwd) throws SQLException, LoginException;
+	String getUserByPasswd(String username, String passwd) throws SQLException, LoginException;
 
     void setLoginTime(String uid) throws SQLException;
 

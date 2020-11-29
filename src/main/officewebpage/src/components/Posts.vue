@@ -11,9 +11,12 @@
 							<span>{{ i.postTime | dateFilter }}</span>
 						</div>
 						<div>
-							<span class="post-author"><strong>{{ i.author.username }}</strong></span>
+							<b-avatar size="2em"></b-avatar>
+							<span class="post-author"><strong>{{ i.author }}</strong></span>
 						</div>
-						<p class="post-content">{{ i.postContent }}</p>
+						<div>
+							<p class="post-content">{{ i.postContent }}</p>
+						</div>
 					</div>
 				</li>
 			</ul>
@@ -54,7 +57,7 @@ export default {
 	display: block;
 	width: 60%;
 	min-height: 12.5rem;
-	max-height: 15rem;
+	max-height: 20rem;
 	margin: 2rem auto;
 	padding: 20px;
 	background-color: white;
@@ -66,6 +69,9 @@ export default {
 .postItem:hover {
 	box-shadow: 2px 2px 8px rgb(187, 187, 187);
 	width: 65%;
+}
+.postItem div{
+	padding-top: .5rem;
 }
 .postItem a {
 	font-weight: bold;

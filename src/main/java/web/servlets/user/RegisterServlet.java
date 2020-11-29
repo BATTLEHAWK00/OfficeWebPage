@@ -1,7 +1,7 @@
 package web.servlets.user;
 
 import bean.Response;
-import bean.User;
+import bean.user.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import service.UsersService;
@@ -26,7 +26,6 @@ public class RegisterServlet extends HttpServlet {
             User user = new User();
             user.setUsername(jsonObject.get("username").getAsString().trim());
             user.setTel(jsonObject.get("tel").getAsString().trim());
-	        user.setMajorClass(jsonObject.get("majorclass").getAsString().trim());
 	        usersService.doUserRegister(user, jsonObject.get("passwd").getAsString());
 	        res.SetMessage("OK");
             LoggerUtil.Logf("ÓÃ»§×¢²á£º%s(uid:%s)", user.getUsername(), user.getUid());
@@ -34,7 +33,8 @@ public class RegisterServlet extends HttpServlet {
             res.SetMessage(e.getMessage());
             resp.setStatus(400);
         } catch (Exception e) {
-            resp.setStatus(500);
+	        e.printStackTrace();
+	        resp.setStatus(500);
             return;
         }
         resp.getWriter().write(res.toJson());

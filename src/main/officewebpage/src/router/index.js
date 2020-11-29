@@ -60,7 +60,33 @@ const router = new Router({
       component: () => import('@/components/Manage'),
       meta: {
         requireAuth: true
-      }
+      },
+      children: [
+        {
+          path: 'ordermanage',
+          name: '工单管理',
+          component: () => import('@/components/Manage/OrderManage'),
+          meta: {
+            requireAuth: false
+          }
+        },
+        {
+          path: 'postsmanage',
+          name: '文章管理',
+          component: () => import('@/components/Manage/PostsManage'),
+          meta: {
+            requireAuth: false
+          }
+        },
+        {
+          path: 'usermanage',
+          name: '用户管理',
+          component: () => import('@/components/Manage/UserManage'),
+          meta: {
+            requireAuth: false
+          }
+        }
+      ]
     }
   ]
 })

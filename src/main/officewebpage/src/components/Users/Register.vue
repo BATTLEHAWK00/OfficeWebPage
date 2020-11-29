@@ -58,18 +58,6 @@
 						></b-form-input>
 					</b-form-group>
 					<b-form-group
-						id="majorclass-group-input"
-						label="专业班级:"
-						label-for="majorclass-input"
-					>
-						<b-form-input
-							id="majorclass-input"
-							v-model="form.majorclass"
-							required
-							placeholder="输入专业班级"
-						></b-form-input>
-					</b-form-group>
-					<b-form-group
 						id="passwd-group-check"
 						label="验证码:"
 						label-for="vericode-check"
@@ -111,7 +99,6 @@ export default {
 				username: "",
 				passwd: "",
 				tel: "",
-				majorclass: "",
 			},
 			input: {
 				passwdCheck: "",
@@ -155,6 +142,10 @@ export default {
 					}
 				})
 				.catch((err) => {
+					if (err.status == 500) {
+						alert("注册失败！内部错误");
+						return;
+					}
 					if (err.response) {
 						alert(
 							"注册失败！错误信息：" + err.response.data.message
@@ -214,6 +205,10 @@ export default {
 					break;
 				}
 			return flag;
+		},
+		vericodeCheck() {
+			if (this.input.veriCode == "") return null;
+			return this.input.veriCode.length == 5;
 		},
 		nullCheck(tmp) {
 			return tmp == "";
