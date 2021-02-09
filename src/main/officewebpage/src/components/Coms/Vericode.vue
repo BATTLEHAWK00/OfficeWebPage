@@ -15,19 +15,18 @@ export default {
 	data() {
 		return {
 			src: "",
-			api: "/api/vericode",
+			api: "/api/vericode/get"
 		};
 	},
 	methods: {
 		refreshVeriCode() {
-			this.src =
-				this.api + "?num=" + Utils.methods.randomNum(100, 999);
-		},
+			this.src = this.api + "?num=" + Utils.methods.randomNum(100, 999);
+		}
 	},
 	props: ["verify"],
 	beforeMount() {
 		this.refreshVeriCode();
-	},
+	}
 };
 </script>
 <style scoped>

@@ -17,13 +17,13 @@
 export default {
 	components: {
 		orderpost: () => import("./Orders/OrderPost"),
-		orderquery: () => import("./Orders/OrderQuery"),
+		orderquery: () => import("./Orders/OrderQuery")
 	},
 	data() {
 		return {
-			show: true,
+			show: true
 		};
-	},
+	}
 };
 </script>
 <style scoped>

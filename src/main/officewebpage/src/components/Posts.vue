@@ -12,7 +12,9 @@
 						</div>
 						<div>
 							<b-avatar size="2em"></b-avatar>
-							<span class="post-author"><strong>{{ i.author }}</strong></span>
+							<span class="post-author"
+								><strong>{{ i.author }}</strong></span
+							>
 						</div>
 						<div>
 							<p class="post-content">{{ i.postContent }}</p>
@@ -27,29 +29,31 @@
 export default {
 	data() {
 		return {
-			postsList: [],
+			postsList: []
 		};
 	},
 	filters: {
 		dateFilter(tstamp) {
 			return new Date(parseInt(tstamp))
 				.toLocaleString()
-				.replace(/:\d{1,2}$/, " ").replace(/(^s*)|(s*$)/g, "");
-		},
+				.replace(/:\d{1,2}$/, " ")
+				.replace(/(^s*)|(s*$)/g, "");
+		}
 	},
 	beforeMount() {
 		var that = this;
-		this.$ajax.get("/api/posts").then((res) => {
+		this.$ajax.get("/api/post/getlist").then(res => {
 			that.postsList = res.data;
 			if (res.data.length == 0) {
 				that.postsList.push({
 					postTitle: "暂时没有动态哦！",
-					postContent: "文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容",
-					author:"文章作者"
+					postContent:
+						"文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容",
+					author: "文章作者"
 				});
 			}
 		});
-	},
+	}
 };
 </script>
 <style scoped>
@@ -70,8 +74,8 @@ export default {
 	box-shadow: 2px 2px 8px rgb(187, 187, 187);
 	width: 65%;
 }
-.postItem div{
-	padding-top: .5rem;
+.postItem div {
+	padding-top: 0.5rem;
 }
 .postItem a {
 	font-weight: bold;
@@ -90,7 +94,7 @@ export default {
 	-webkit-line-clamp: 5;
 	overflow: hidden;
 }
-.postItem .post-author{
+.postItem .post-author {
 	margin: 0;
 	color: black;
 }

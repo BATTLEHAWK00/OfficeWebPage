@@ -17,22 +17,12 @@ public class PostServiceImpl implements PostsService {
     PostsDao postsDao = new PostsDaoImpl();
 
     @Override
-    public List<Post> getAllPosts() {
-        try {
-            return postsDao.getAllPosts();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return null;
-        }
+    public List<Post> getAllPosts() throws SQLException {
+        return postsDao.getAllPosts();
     }
 
     @Override
-    public List<Post> getPublishedPosts() {
-        try {
-            return postsDao.getPosts(true);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return null;
-        }
+    public List<Post> getPublishedPosts() throws SQLException {
+        return postsDao.getPosts(true);
     }
 }

@@ -15,7 +15,7 @@ public interface UsersService {
 	 * @return
 	 * @throws LoginException
 	 */
-	String doUserLogin(String username, String passwd) throws LoginException;
+	String doUserLogin(String username, String passwd) throws LoginException, SQLException;
 
 	/**
 	 * 处理用户注册
@@ -24,7 +24,7 @@ public interface UsersService {
 	 * @param passwd 密码(明文)
 	 * @throws RegisterException
 	 */
-	void doUserRegister(User user, String passwd) throws RegisterException;
+	void doUserRegister(User user, String passwd) throws RegisterException, SQLException;
 
 	/**
 	 * 根据UID获取用户

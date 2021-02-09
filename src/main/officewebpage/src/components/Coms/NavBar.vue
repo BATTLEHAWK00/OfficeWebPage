@@ -70,7 +70,7 @@
 export default {
 	data() {
 		return {
-			loading: false,
+			loading: false
 		};
 	},
 	props: ["userName", "isLoggedin"],
@@ -83,15 +83,14 @@ export default {
 			}, 300);
 		},
 		goto(route) {
-			this.$router.push(route).catch((err) => {});
-		},
+			this.$router.push(route).catch(err => {});
+		}
 	},
 	watch: {
 		$route(to, from) {
 			this.loadingAnim();
-		},
-	},
+		}
+	}
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

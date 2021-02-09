@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <b-tabs>
-            <b-tab title="asf"></b-tab>
-        </b-tabs>
-    </div>
+	<div>
+		<b-tabs>
+			<b-tab title="asf"></b-tab>
+		</b-tabs>
+	</div>
 </template>

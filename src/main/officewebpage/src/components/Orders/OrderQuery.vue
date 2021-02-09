@@ -19,6 +19,13 @@
 			<template #cell(respTime)="data">
 				{{ data.item.respTime | dateFilter }}
 			</template>
+			<template #cell(operation)="data">
+				<a href="javascript:void(0)" @click="orderPay">去支付</a>
+				<a href="javascript:void(0)" @click="orderDelete(data.item.oid)"
+					>删除</a
+				>
+				<a href="javascript:void(0)" @click="orderReminder">催单</a>
+			</template>
 		</b-table>
 	</div>
 </template>
@@ -33,27 +40,31 @@ export default {
 				fields: [
 					{
 						label: "工单号",
-						key: "oid",
+						key: "oid"
 					},
 					{
 						label: "工单类型",
-						key: "type",
+						key: "type"
 					},
 					{
 						label: "提交时间",
-						key: "submitTime",
+						key: "submitTime"
 					},
 					{
 						label: "更新时间",
-						key: "respTime",
+						key: "respTime"
 					},
 					{
 						label: "当前状态",
-						key: "status",
+						key: "status"
 					},
+					{
+						label: "操作",
+						key: "operation"
+					}
 				],
-				items: [],
-			},
+				items: []
+			}
 		};
 	},
 	methods: {
@@ -72,6 +83,18 @@ export default {
 					return "secondary";
 			}
 		},
+		orderDelete(oid) {
+			console.log(oid);
+			this.$ajax
+				.get("/api/order/delete?oid=" + oid)
+				.then(res => {
+					alert("删除成功！");
+					location.reload();
+				})
+				.catch(err => {
+					alert("删除失败！错误：" + err.response.data.data);
+				});
+		}
 	},
 	filters: {
 		dateFilter(tstamp) {
@@ -79,26 +102,26 @@ export default {
 			return new Date(parseInt(tstamp))
 				.toLocaleString()
 				.replace(/:\d{1,2}$/, " ");
-		},
+		}
 	},
 	beforeMount() {
 		var that = this;
 		setTimeout(() => {
 			this.$ajax
-				.get("/api/order", {
+				.get("/api/order/getlist", {
 					params: {
 						uid: JSON.parse(window.sessionStorage.getItem("user"))
-							.uid,
-					},
+							.uid
+					}
 				})
-				.then((res) => {
+				.then(res => {
 					if (res.data.message == "OK") {
 						that.table.items = res.data.data;
 						if (that.table.items.length == 0)
 							that.table.items.push({
 								type: "你还没有提交工单哦！",
 								submitTime: 0,
-								respTime: 0,
+								respTime: 0
 							});
 						setTimeout(() => {
 							that.isBusy = false;
@@ -106,6 +129,6 @@ export default {
 					}
 				});
 		}, 200);
-	},
+	}
 };
 </script>

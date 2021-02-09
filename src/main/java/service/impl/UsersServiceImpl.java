@@ -21,38 +21,28 @@ public class UsersServiceImpl implements UsersService {
     UsersDao usersDao = new UsersDaoImpl();
 
     @Override
-    public String doUserLogin(String username, String passwd) throws LoginException {
+    public String doUserLogin(String username, String passwd) throws LoginException, SQLException {
         String passwd_md5 = SecurityUtil.getSaltMD5(passwd, username);
-        try {
-            String uid = usersDao.getUserByPasswd(username, passwd_md5);
-            if (uid == null)
-                throw new LoginException("用户名或密码不正确！");
-            usersDao.setLoginTime(uid);
-            return uid;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new LoginException("内部错误！");
-        }
+        String uid = usersDao.getUserByPasswd(username, passwd_md5);
+        if (uid == null)
+            throw new LoginException("用户名或密码不正确！");
+        usersDao.setLoginTime(uid);
+        return uid;
     }
 
     @Override
-    public void doUserRegister(User user, String passwd) throws RegisterException {
+    public void doUserRegister(User user, String passwd) throws RegisterException, SQLException {
         String uid;
         String passwd_md5 = SecurityUtil.getSaltMD5(passwd, user.getUsername());
-        try {
-            if (usersDao.getUserByName(user.getUsername()) != null) {
-                throw new RegisterException("该用户名已存在！");
-            }
-            do {
-                uid = StringUtil.getUUID(8);
-            } while (usersDao.getUserByUID(uid) != null);
-            user.setIdentity(UserIdentity.Student);
-            user.setUid(uid);
-            usersDao.RegisterUser(user, passwd_md5);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RegisterException("内部错误！");
+        if (usersDao.getUserByName(user.getUsername()) != null) {
+            throw new RegisterException("该用户名已存在！");
         }
+        do {
+            uid = StringUtil.getUUID(8);
+        } while (usersDao.getUserByUID(uid) != null);
+        user.setIdentity(UserIdentity.Student);
+        user.setUid(uid);
+        usersDao.RegisterUser(user, passwd_md5);
     }
 
     @Override

@@ -37,5 +37,5 @@ public interface PostsDao extends BaseDao {
 	 */
 	List<Post> getPosts(boolean onlyPublished) throws SQLException;
 
-
+	void deletePost(String pid) throws SQLException;
 }

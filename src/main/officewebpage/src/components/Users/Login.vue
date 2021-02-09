@@ -82,7 +82,7 @@ export default {
 			var flag = true;
 			var that = this;
 			this.$ajax
-				.get("/api/vericode", {
+				.get("/api/vericode/check", {
 					params: {
 						code: this.input.veriCode,
 					},

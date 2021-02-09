@@ -2,6 +2,7 @@ package service;
 
 import bean.Post;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface PostsService {
@@ -10,13 +11,13 @@ public interface PostsService {
      *
      * @return
      */
-    List<Post> getAllPosts();
+    List<Post> getAllPosts() throws SQLException;
 
     /**
      * 获取已发布文章
      *
      * @return
      */
-    List<Post> getPublishedPosts();
+    List<Post> getPublishedPosts() throws SQLException;
 
 }

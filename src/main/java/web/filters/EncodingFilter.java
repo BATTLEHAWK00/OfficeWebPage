@@ -10,7 +10,6 @@ import java.io.IOException;
 /**
  * 统一添加响应Header
  */
-//@WebFilter("/*")
 public class EncodingFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {

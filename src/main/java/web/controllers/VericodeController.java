@@ -1,46 +1,43 @@
 package web.controllers;
 
 import bean.Response;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import utils.LoggerUtil;
 import utils.VeriCodeUtil;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
-@Controller
+@RestController
+@RequestMapping("/vericode")
 public class VericodeController {
-    @RequestMapping("/vericode")
-    @ResponseStatus
-    public void getVericode(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        HttpSession session = req.getSession();
-        if (req.getParameter("vericode") != null) {
-            Response res = new Response();
-            if (session.getAttribute("vericode") == null) {
-                resp.setStatus(400);
-                return;
-            }
-            String inputCode = req.getParameter("code").toLowerCase();
-            if (session.getAttribute("vericode").equals(inputCode)) {
-                res.SetMessage("OK");
+
+    @RequestMapping(value = "/check", produces = "application/json")
+    public ResponseEntity<String> checkVericode(@RequestParam("code") String code, HttpSession session) {
+        if (!code.isEmpty() && session.getAttribute("vericode") != null)
+            if (code.toLowerCase().equals(session.getAttribute("vericode"))) {
                 session.removeAttribute("vericode");
+                return new ResponseEntity<>(Response.OK.toJsonStr(),HttpStatus.ACCEPTED);
             } else {
-                res.SetMessage("Fail");
-                LoggerUtil.Log("验证码验证失败");
+                return new ResponseEntity<>(Response.Fail.toJsonStr(),HttpStatus.ACCEPTED);
             }
-            resp.getWriter().write(res.toJson());
-            return;
-        }
-        resp.setContentType("image/png");
-        String vericode = VeriCodeUtil.getVerificationCode(80, 5, resp.getOutputStream());
-        if (session.getAttribute("vericode") != null) {
-            session.removeAttribute("vericode");
-        }
+        return new ResponseEntity<>(Response.Fail.toJsonStr(),HttpStatus.FORBIDDEN);
+    }
+
+    @RequestMapping(value = "/get", produces = {"image/png"})
+    public byte[] getVericode(HttpSession session) throws IOException {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        OutputStream outputStream = new BufferedOutputStream(bytes);
+        String vericode = VeriCodeUtil.getVerificationCode(80, 5, outputStream);
         session.setAttribute("vericode", vericode.toLowerCase());
         LoggerUtil.Log("验证码请求：" + vericode);
+        return bytes.toByteArray();
     }
 }

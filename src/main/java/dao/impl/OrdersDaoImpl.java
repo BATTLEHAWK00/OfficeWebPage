@@ -9,7 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -95,6 +97,41 @@ public class OrdersDaoImpl implements OrdersDao {
 			});
 		});
 		return index.get();
+	}
+
+	@Override
+	public void setOrderState(String oid,int state) throws SQLException {
+		DBConnector.get().getConnection(conn -> {
+			var op = new SQLOperation(conn);
+			String sql = String.format("UPDATE orders SET state=%d WHERE OID='%s'",state,oid);
+			op.setSql(sql);
+			op.ExecuteUpdate();
+		});
+	}
+
+	@Override
+	public void deleteOrder(String oid) throws SQLException {
+		DBConnector.get().getConnection(conn -> {
+			var op = new SQLOperation(conn);
+			String sql = String.format("DELETE FROM orders where OID='%s'",oid);
+			op.setSql(sql);
+			op.ExecuteNonQuery();
+		});
+	}
+
+	@Override
+	public Map<Integer, String> getOrderTypeMap() throws SQLException {
+		Map<Integer,String> types = new HashMap<>();
+		DBConnector.get().getConnection(conn -> {
+			var op = new SQLOperation(conn);
+			String sql = String.format("SELECT * FROM order_type");
+			op.setSql(sql);
+			op.ExecuteQuery(res -> {
+				while (res.next())
+					types.put(res.getInt("type_index"),res.getString("type_name"));
+			});
+		});
+		return types;
 	}
 
 	@Override

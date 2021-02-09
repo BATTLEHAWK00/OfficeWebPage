@@ -59,6 +59,16 @@ public class PostsDaoImpl implements PostsDao {
 	}
 
 	@Override
+	public void deletePost(String pid) throws SQLException {
+		DBConnector.get().getConnection(conn -> {
+			var op = new SQLOperation(conn);
+			String sql = String.format("DELETE FROM passages where PID='%s'",pid);
+			op.setSql(sql);
+			op.ExecuteNonQuery();
+		});
+	}
+
+	@Override
 	public Post getByResultSet(ResultSet res) throws SQLException {
 		Post post = new Post();
 		post.setPostID(res.getString("PID"));

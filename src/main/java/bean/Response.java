@@ -1,6 +1,8 @@
 package bean;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
 import lombok.Data;
 
 /**
@@ -9,6 +11,9 @@ import lombok.Data;
 public class Response {
     private Object data;
     private String message;
+
+    public static final Response OK = new Response("OK");
+    public static final Response Fail = new Response("Fail");
 
     public Response(String message, Object data) {
         this.message = message;
@@ -31,7 +36,7 @@ public class Response {
         this.data = data;
     }
 
-    public String toJson() {
+    public String toJsonStr() {
         if (data == null)
             data = new Object();
         return new Gson().toJson(this);

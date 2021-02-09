@@ -52,12 +52,12 @@ export default {
 		return {
 			form: {
 				orderDesc: "",
-				orderType: null,
+				orderType: null
 			},
 			orderTypes: [
 				{
 					text: "请选择",
-					value: null,
+					value: null
 				},
 				"硬件维修",
 				"软件配置",
@@ -66,8 +66,8 @@ export default {
 				"PPT定制",
 				"VR定制",
 				"小程序开发",
-				"软件定制",
-			],
+				"软件定制"
+			]
 		};
 	},
 	methods: {
@@ -75,22 +75,22 @@ export default {
 			evt.preventDefault();
 			var that = this;
 			this.$ajax
-				.post("/api/order", this.form)
-				.then((res) => {
+				.post("/api/order/post", this.form)
+				.then(res => {
 					if (res.data.message == "OK") {
 						alert("提交成功！");
 						that.onReset();
 						location.reload();
 					}
 				})
-				.catch((res) => {
+				.catch(res => {
 					alert("提交失败！原因：" + res.data.message);
 				});
 		},
 		onReset() {
 			this.form.orderDesc = "";
 			this.form.orderType = null;
-		},
-	},
+		}
+	}
 };
 </script>

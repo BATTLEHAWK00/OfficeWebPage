@@ -11,7 +11,7 @@ const methods = {
 			return;
 		}
 		$ajax
-			.get("/api/user/login", {
+			.get("/api/user/login/check", {
 				params: {
 					uid: userObj.uid,
 				},

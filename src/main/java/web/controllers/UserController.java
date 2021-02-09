@@ -5,12 +5,8 @@ import bean.user.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import service.UsersService;
-import service.exceptions.LoginException;
 import service.exceptions.RegisterException;
 import service.impl.UsersServiceImpl;
 import utils.LoggerUtil;
@@ -22,60 +18,42 @@ import java.io.IOException;
 
 @Controller
 @RequestMapping("/user")
+@ResponseBody
 public class UserController {
     UsersService usersService = new UsersServiceImpl();
 
+    @RequestMapping(value = "/login/check")
+    public String loginCheck(@RequestParam("uid") String uid, HttpSession session) {
+        if (session.getAttribute("loggedUser") == null)
+            return Response.Fail.toJsonStr();
+        User user = (User) session.getAttribute("loggedUser");
+        if (uid.equals(user.getUid()))
+            return Response.OK.toJsonStr();
+        else
+            return Response.Fail.toJsonStr();
+    }
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public void doLogin(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        JsonObject jsonObject = JsonParser.parseReader(req.getReader()).getAsJsonObject();
+    public String doLogin(@RequestBody String param, HttpSession session) throws IOException {
+        JsonObject jsonObject = JsonParser.parseString(param).getAsJsonObject();
         String username = jsonObject.get("username").getAsString();
         String passwd = jsonObject.get("passwd").getAsString();
-        JsonObject data = new JsonObject();
-        Response res;
+        Response res = new Response();
         User user;
-        res = new Response();
         try {
             String uid = usersService.doUserLogin(username, passwd);
             user = usersService.getUserByUID(uid);
-            HttpSession session = req.getSession();
             if (session.getAttribute("loggedUser") != null) {
                 session.removeAttribute("loggedUser");
             }
             session.setAttribute("loggedUser", user);
-            session.setMaxInactiveInterval(300);
             res.SetMessage("OK");
             res.SetData(user);
             LoggerUtil.Log("ÓÃ»§µÇÂ¼£º" + user.getUsername());
-        } catch (LoginException e) {
-            res.SetMessage(e.getMessage());
-            resp.setStatus(400);
-            return;
         } catch (Exception e) {
             e.printStackTrace();
-            resp.setStatus(500);
-            return;
         }
-        resp.getWriter().write(res.toJson());
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public void doLoginCheck(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        HttpSession session = req.getSession();
-        Response res = new Response();
-        if (req.getParameter("uid") == null) {
-            resp.setStatus(400);
-            return;
-        }
-        if (session.getAttribute("loggedUser") != null) {
-            User user = (User) session.getAttribute("loggedUser");
-            if (req.getParameter("uid").equals(user.getUid()))
-                res.SetMessage("OK");
-            else
-                res.SetMessage("Failed");
-        } else {
-            res.SetMessage("Failed");
-        }
-        resp.getWriter().write(res.toJson());
+        return res.toJsonStr();
     }
 
     @RequestMapping("/register")
@@ -99,6 +77,11 @@ public class UserController {
             resp.setStatus(500);
             return;
         }
-        resp.getWriter().write(res.toJson());
+        resp.getWriter().write(res.toJsonStr());
+    }
+
+    @RequestMapping("/logout")
+    public void doLogout(HttpSession session) {
+        session.removeAttribute("loggedUser");
     }
 }

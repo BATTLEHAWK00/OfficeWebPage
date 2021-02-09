@@ -1,9 +1,16 @@
 package utils;
 
+import javax.servlet.ServletContext;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class LoggerUtil {
+    private static ServletContext servletContext;
+
+    public static void setServletContext(ServletContext servletContext) {
+        LoggerUtil.servletContext = servletContext;
+    }
+
     public static void Log(String msg) {
         System.out.printf(
                 "%s | %s\n",
