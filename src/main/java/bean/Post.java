@@ -1,6 +1,8 @@
 package bean;
 
 import com.google.gson.Gson;
+import jdk.jfr.DataAmount;
+import lombok.Data;
 
 /**
  * 动态文章数据

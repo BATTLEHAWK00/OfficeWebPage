@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/user/register")
+//@WebServlet("/user/register")
 public class RegisterServlet extends HttpServlet {
 	UsersService usersService = new UsersServiceImpl();
     @Override

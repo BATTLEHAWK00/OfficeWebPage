@@ -1,6 +1,7 @@
 package bean;
 
 import com.google.gson.Gson;
+import lombok.Data;
 
 /**
  * ÏìÓ¦Êı¾İ

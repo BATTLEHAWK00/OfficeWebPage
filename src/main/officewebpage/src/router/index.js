@@ -56,7 +56,7 @@ const router = new Router({
     {
       path: '/manage',
       name: '管理',
-      component: () => import('@/components/Manage'),
+      //component: () => import('@/components/Manage'),
       meta: {
         requireAuth: true
       },

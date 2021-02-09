@@ -9,5 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 public class SessionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+
     }
 }

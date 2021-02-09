@@ -6,4 +6,5 @@ package bean.user;
  * @author: YXL
  **/
 public class StudentInfo implements UserInfo {
+
 }

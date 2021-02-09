@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/posts")
+//@WebServlet("/posts")
 public class PostsServlet extends HttpServlet {
 	PostsService postsService = new PostServiceImpl();
     @Override
